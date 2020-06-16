@@ -10,14 +10,14 @@ public class Progress : MonoBehaviour
 
     //Instance
     static public Progress Instance;
+    //進行度
+    public int Degree;
 
-    void Start()
+    //アクションシーン開始時の進行度の初期化
+    private void Awake()
     {
-        
+        Instance = new Progress();
+        Instance.Degree = 0;
     }
     
-    void Update()
-    {
-        
-    }
 }
