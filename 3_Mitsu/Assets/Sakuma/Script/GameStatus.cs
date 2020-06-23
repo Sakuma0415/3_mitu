@@ -26,7 +26,7 @@ public class GameStatus : MonoBehaviour
     //初期化
     private void Init()
     {
-        gameMode = GameMode.Start;
+        gameMode = GameMode.Play;
     }
 
     //開始時の処理

@@ -16,7 +16,8 @@ public class PlayerStatus : MonoBehaviour
     public float spead=0;
     //プレイヤーの最高速度になるまでの時間
     public float speadmaximumTime = 0;
-
+    //プレイヤーのトランスフォーム
+    public Transform PlayerTransform;
 
     //Private
     //プレイヤーのオブジェクト
@@ -33,7 +34,9 @@ public class PlayerStatus : MonoBehaviour
     private void Init()
     {
         playerObject = Instantiate(playerPrefab);
+        Camera.main.GetComponent<CameraMove>().SeeSet(playerObject);
         playerObject.GetComponent<PlayerMove>().playerStatus = this;
+        PlayerTransform = playerObject.GetComponent<Transform>();
     }
 
     void Update()

@@ -16,6 +16,9 @@ public class PlayerMove : MonoBehaviour
     //プレイヤーのアニメーション
     [SerializeField]
     PlayerAnime playerAnime;
+    //プレイヤーのリジットボディ
+    [SerializeField]
+    Rigidbody2D rigidbody2D;
     //Private
 
     //プレイヤーの角度
@@ -39,7 +42,16 @@ public class PlayerMove : MonoBehaviour
         PlayerImage.transform.eulerAngles = new Vector3(0, 0, 180 + angle);
     }
 
-    void Update()
+    private void FixedUpdate()
+    {
+        if (GameStatus.Instance.gameMode == GameStatus.GameMode.Play)
+        {
+            Move();
+        }
+    }
+
+
+    private void Move()
     {
         //プレイヤーの入力の方向
         Vector2 MoveVector = Vector2.zero;
@@ -50,35 +62,32 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) { MoveVector.x += 1; }
 
 
-        if(MoveVector != Vector2.zero)
+        if (MoveVector != Vector2.zero)
         {
-            speadTime = (speadTime + Time.deltaTime / playerStatus.speadmaximumTime) > 1 ? 1 : speadTime + Time.deltaTime / playerStatus.speadmaximumTime;
+            speadTime = (speadTime + Time.fixedDeltaTime / playerStatus.speadmaximumTime) > 1 ? 1 : speadTime + Time.fixedDeltaTime  / playerStatus.speadmaximumTime;
         }
         else
         {
-            speadTime = (speadTime - Time.deltaTime / playerStatus.speadmaximumTime) < 0 ? 0 : speadTime - Time.deltaTime / playerStatus.speadmaximumTime;
+            speadTime = (speadTime - Time.fixedDeltaTime / playerStatus.speadmaximumTime) < 0 ? 0 : speadTime - Time.fixedDeltaTime / playerStatus.speadmaximumTime;
         }
 
         spead = Mathf.Lerp(0, playerStatus.spead, speadTime);
 
         playerAnime.IsWalk = (spead > 0);
 
-        if (spead>0)
+        if (spead > 0)
         {
-            float moveAngle = Mathf.Atan2(MoveVector.y, MoveVector.x)*Mathf.Rad2Deg ;
-            Debug.Log(moveAngle);
+            float moveAngle = Mathf.Atan2(MoveVector.y, MoveVector.x) * Mathf.Rad2Deg;
+            //Debug.Log(moveAngle);
 
             if (MoveVector != Vector2.zero)
             {
                 angle = Mathf.LerpAngle(angle, moveAngle, 0.3f);
             }
 
-            PlayerImage.transform.eulerAngles = new Vector3(0,0,180+angle);
-            transform.position += new Vector3(Mathf.Cos(angle*Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad),0)* spead * Time.deltaTime ;
+            PlayerImage.transform.eulerAngles = new Vector3(0, 0, 180 + angle);
+            rigidbody2D.transform.position += new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0) * spead * Time.fixedDeltaTime;
         }
-
     }
-
-
 
 }
