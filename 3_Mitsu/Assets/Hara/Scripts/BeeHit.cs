@@ -7,7 +7,7 @@ public class BeeHit : MonoBehaviour
     /// <summary>
     /// 蜂とプレイヤーの接触フラグ
     /// </summary>
-    public bool PlayerHit = false;
+    public bool PlayerHit { set; get; } = false;
 
     private void OnTriggerStay2D(Collider2D collision)
     {

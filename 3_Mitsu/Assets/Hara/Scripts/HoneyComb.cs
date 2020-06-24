@@ -9,7 +9,7 @@ public class HoneyComb : MonoBehaviour
     /// <summary>
     /// 蜂の生成を許可するフラグ
     /// </summary>
-    public bool SpawnFlag { set; get; } = false;
+    public bool SpawnFlag { private set; get; } = false;
 
     /// <summary>
     /// 蜂の巣の設置個所ID
@@ -58,6 +58,8 @@ public class HoneyComb : MonoBehaviour
     public void SetHoney()
     {
         gameObject.SetActive(true);
+
+        SpawnFlag = false;
     }
 
     /// <summary>

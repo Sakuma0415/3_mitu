@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class HoneyMaster : MonoBehaviour
@@ -21,8 +22,10 @@ public class HoneyMaster : MonoBehaviour
     private BeeControl[] beeControl = null;
 
     private List<int> locationIDList = new List<int>();
+    private List<int> activeBeeID = new List<int>();
 
     private float[] randomMoveTime = null;
+    private float[] spawnDelayTime = null;
     private int[] lastPosID = null;
 
     [SerializeField, Tooltip("テスト用プレイヤー")] private GameObject playerTest = null;
@@ -37,10 +40,19 @@ public class HoneyMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerTest.transform.position = MouseToWorld();
+        // マウスカーソルをプレイヤーとして扱う(テスト用)
+        if(playerTest != null) 
+        { 
+            playerTest.transform.position = MouseToWorld();
+            
+            if(Input.GetMouseButtonDown(0))
+            {
+                playerTest.SetActive(!playerTest.activeSelf);
+            }
+        }
 
         PlayerGPS();
-        CheckHoneyComb();
+        CheckState();
     }
 
     /// <summary>
@@ -56,27 +68,26 @@ public class HoneyMaster : MonoBehaviour
         }
 
         // 蜂の巣のインスタンスを生成（初回のみ）
-        if(honeyComb == null)
+        honeyComb = new HoneyComb[maxHoneyComb];
+        spawnDelayTime = new float[honeyComb.Length];
+        for (int i = 0; i < honeyComb.Length; i++)
         {
-            honeyComb = new HoneyComb[maxHoneyComb];
-            for(int i = 0; i < honeyComb.Length; i++)
-            {
-                honeyComb[i] = Instantiate(honeyCombPrefab);
-            }
+            honeyComb[i] = Instantiate(honeyCombPrefab);
         }
 
         // ロケーションIDリストを用意
-        for(int i = 0; i < createPos.Length; i++)
+        for (int i = 0; i < createPos.Length; i++)
         {
             locationIDList.Add(i);
         }
 
         // 巣を配置
-        foreach(var comb in honeyComb)
+        foreach (var comb in honeyComb)
         {
             int index = Random.Range(0, locationIDList.Count);
             comb.transform.position = createPos[locationIDList[index]];
             comb.LocationID = locationIDList[index];
+            comb.SetHoney();
             locationIDList.RemoveAt(index);
         }
     }
@@ -154,18 +165,58 @@ public class HoneyMaster : MonoBehaviour
     }
 
     /// <summary>
-    /// 蜂の出撃許可をチェック
+    /// 蜂関連のステータスをチェック
     /// </summary>
-    private void CheckHoneyComb()
+    private void CheckState()
     {
         if(honeyComb == null) { return; }
 
+        // 蜂の巣
+        int index = 0;
         foreach(var comb in honeyComb)
         {
+            int id = comb.LocationID;
+
+            // 蜂の出撃許可が出ていた場合
             if (comb.SpawnFlag)
             {
-                comb.SpawnFlag = false;
-                SpawnBee(comb.LocationID);
+                if (activeBeeID.Contains(id) == false)
+                {
+                    activeBeeID.Add(id);
+                    SpawnBee(id);
+                }
+
+                // 10秒後に蜂の巣を再生成
+                spawnDelayTime[index] += Time.deltaTime;
+                if (spawnDelayTime[index] > 10.0f)
+                {
+                    spawnDelayTime[index] = 0;
+                    locationIDList.Add(id);
+                    int rand = Random.Range(0, locationIDList.Count);
+                    comb.transform.position = createPos[locationIDList[rand]];
+                    comb.LocationID = locationIDList[rand];
+                    comb.SetHoney();
+                    locationIDList.RemoveAt(rand);
+
+                    int num = activeBeeID.IndexOf(comb.LocationID);
+                    if(num >= 0)
+                    {
+                        activeBeeID.RemoveAt(num);
+                    }
+                }
+            }
+            index++;
+        }
+
+        // 蜂
+        if(beeControl == null) { return; }
+
+        foreach(var bee in beeControl)
+        {
+            if (bee.HitFlag)
+            {
+                HitToPlayer();
+                break;
             }
         }
     }
@@ -219,5 +270,13 @@ public class HoneyMaster : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 蜂がプレイヤーに接触した時に呼び出す処理
+    /// </summary>
+    private void HitToPlayer()
+    {
+        Debug.Log("接触しました");
     }
 }

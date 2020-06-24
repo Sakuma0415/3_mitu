@@ -11,6 +11,8 @@ public class BeeControl : MonoBehaviour
     private SpriteRenderer spriteRenderer = null;
     private BeeHit beeHit = null;
 
+    public bool HitFlag { private set; get; } = false;
+
     /// <summary>
     /// 移動座標の設定
     /// </summary>
@@ -45,6 +47,7 @@ public class BeeControl : MonoBehaviour
         }
 
         Chase = false;
+        HitFlag = false;
     }
 
     /// <summary>
@@ -87,17 +90,12 @@ public class BeeControl : MonoBehaviour
     {
         if(beeHit != null)
         {
-            if (Chase && moveFlag)
-            {
-                if (beeHit.PlayerHit)
-                {
-                    Debug.Log("蜂に刺されました");
-                }
-            }
-            else
-            {
-                beeHit.PlayerHit = false;
-            }
+            if (Chase == false || moveFlag == false) { beeHit.PlayerHit = false; }
+            HitFlag = Chase && moveFlag && beeHit.PlayerHit;
+        }
+        else
+        {
+            HitFlag = false;
         }
     }
 
@@ -106,10 +104,8 @@ public class BeeControl : MonoBehaviour
     /// </summary>
     public void SpawnAnimation()
     {
-        if (coroutine == null)
-        {
-            coroutine = StartCoroutine(BeeAnimation());
-        }
+        if (coroutine != null) { StopCoroutine(coroutine); }
+        coroutine = StartCoroutine(BeeAnimation());
     }
 
     /// <summary>

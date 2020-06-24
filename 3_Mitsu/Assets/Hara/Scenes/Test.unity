@@ -333,7 +333,7 @@ MonoBehaviour:
   - {x: 3, y: -3, z: 0}
   - {x: -3, y: 3, z: 0}
   maxHoneyComb: 3
-  maxBee: 2
+  maxBee: 5
   playerTest: {fileID: 2085844817}
 --- !u!4 &1950972603
 Transform:
