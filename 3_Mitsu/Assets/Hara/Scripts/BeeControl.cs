@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class BeeControl : MonoBehaviour
 {
@@ -59,6 +60,15 @@ public class BeeControl : MonoBehaviour
     /// </summary>
     private void BeeMove()
     {
+        try
+        {
+            moveFlag = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+        }
+        catch
+        {
+
+        }
+
         if(moveFlag == false) { return; }
 
         // 現在の位置情報を更新
