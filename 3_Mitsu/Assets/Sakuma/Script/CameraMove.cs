@@ -11,15 +11,23 @@ public class CameraMove : MonoBehaviour
     Transform targetTransform;
     [SerializeField]
     Rigidbody2D rigidbody2D;
+    [SerializeField]
+    Vector2 size = Vector2.zero;
+    [SerializeField]
+    LayerMask layerMask;
+
     //フレームワーク
     private void FixedUpdate()
     {
         if(GameStatus .Instance.gameMode ==GameStatus.GameMode.Play && targetTransform != null)
         {
-            rigidbody2D.transform.position = Vector3.Lerp(
-                new Vector3(transform .position.x, transform.position.y, -10),
-                new Vector3 ( targetTransform.position.x, targetTransform.position.y,-10),
+            Vector3 pos= Vector3.Lerp(
+                new Vector3(transform.position.x, transform.position.y, -10),
+                new Vector3(targetTransform.position.x, targetTransform.position.y, -10),
                 0.05f);
+
+            rigidbody2D.transform.position = pos;
+
         }
     }
 
