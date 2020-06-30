@@ -169,7 +169,7 @@ public class HoneyMaster : MonoBehaviour
     /// </summary>
     private void CheckState()
     {
-        if(honeyComb == null) { return; }
+        if(honeyComb == null || createPos.Length <= 0) { return; }
 
         // 蜂の巣
         int index = 0;
@@ -239,7 +239,7 @@ public class HoneyMaster : MonoBehaviour
     /// </summary>
     private void PlayerGPS()
     {
-        if(beeControl != null)
+        if(beeControl != null && createPos.Length > 0)
         {
             for(int i = 0; i < beeControl.Length; i++)
             {
