@@ -14,6 +14,8 @@ public class HoneyMaster : MonoBehaviour
 
     [SerializeField, Header("蜂の巣の生成上限数"), Range(1, 15)] private int maxHoneyComb = 5;
     [SerializeField, Header("蜂の最大生成数"), Range(1, 15)] private int maxBee = 5;
+    [SerializeField, Header("蜂の移動速度"), Range(1.0f, 5.0f)] private float speed = 1.0f;
+    [SerializeField, Header("PlayStatusオブジェクト")] private PlayerStatus status = null;
 
     // 管理用の蜂の巣配列を用意
     private HoneyComb[] honeyComb = null;
@@ -28,8 +30,6 @@ public class HoneyMaster : MonoBehaviour
     private float[] spawnDelayTime = null;
     private int[] lastPosID = null;
 
-    [SerializeField, Tooltip("テスト用プレイヤー")] private GameObject playerTest = null;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -40,17 +40,6 @@ public class HoneyMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // マウスカーソルをプレイヤーとして扱う(テスト用)
-        if(playerTest != null) 
-        { 
-            playerTest.transform.position = MouseToWorld();
-            
-            if(Input.GetMouseButtonDown(0))
-            {
-                playerTest.SetActive(!playerTest.activeSelf);
-            }
-        }
-
         PlayerGPS();
         CheckState();
     }
@@ -103,6 +92,7 @@ public class HoneyMaster : MonoBehaviour
         for(int i = 0; i < beeControl.Length; i++)
         {
             beeControl[i] = Instantiate(beePrefab);
+            beeControl[i].Speed = speed;
             beeControl[i].Init();
             beeControl[i].gameObject.SetActive(false);
         }
@@ -245,8 +235,17 @@ public class HoneyMaster : MonoBehaviour
             {
                 if (beeControl[i].Chase)
                 {
+                    Vector3 movePos;
                     // 追跡状態のときはプレイヤーの座標に向かってくる
-                    beeControl[i].MovePos = MouseToWorld();
+                    if(status != null)
+                    {
+                        movePos = status.PlayerTransform.position;
+                    }
+                    else
+                    {
+                        movePos = MouseToWorld();
+                    }
+                    beeControl[i].MovePos = movePos;
                 }
                 else
                 {

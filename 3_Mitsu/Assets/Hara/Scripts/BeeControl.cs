@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class BeeControl : MonoBehaviour
 {
-    [SerializeField, Tooltip("移動速度"), Range(1, 5)] private float speed = 1.0f;
+    /// <summary>
+    /// 蜂の移動速度
+    /// </summary>
+    public float Speed { set; private get; } = 1.0f;
+
     private Vector3 nowPos = Vector3.zero;
 
     private Coroutine coroutine = null;
@@ -80,7 +84,7 @@ public class BeeControl : MonoBehaviour
         }
 
         // 移動処理
-        transform.position = Vector3.MoveTowards(nowPos, target, (Chase ? speed : speed * 0.5f) * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(nowPos, target, (Chase ? Speed : Speed * 0.5f) * Time.deltaTime);
     }
 
     /// <summary>
