@@ -251,7 +251,7 @@ public class HoneyMaster : MonoBehaviour
                 {
                     // 非追跡状態のときは蜂の巣の生成座標をランダムに取得して向かってくる
                     randomMoveTime[i] += Time.deltaTime;
-                    if(randomMoveTime[i] > 2.0f)
+                    if(randomMoveTime[i] > 5.0f)
                     {
                         int index = Random.Range(0, createPos.Length);
 

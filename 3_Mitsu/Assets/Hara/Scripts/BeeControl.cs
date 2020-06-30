@@ -94,7 +94,6 @@ public class BeeControl : MonoBehaviour
     {
         if(beeHit != null)
         {
-            if (Chase == false || moveFlag == false) { beeHit.PlayerHit = false; }
             HitFlag = Chase && moveFlag && beeHit.PlayerHit;
         }
         else
@@ -163,7 +162,7 @@ public class BeeControl : MonoBehaviour
     /// 蜂の視界内に入ったら追跡を開始
     /// </summary>
     /// <param name="collision"></param>
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         Chase = true;
     }
