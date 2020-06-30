@@ -5,52 +5,49 @@ using UnityEngine;
 public class BeeControl : MonoBehaviour
 {
     [SerializeField, Tooltip("移動速度"), Range(1, 5)] private float speed = 1.0f;
-
-    private Vector3 spawnPos = Vector3.zero;
     private Vector3 nowPos = Vector3.zero;
 
-    /// <summary>
-    /// プレイヤーを追従する
-    /// </summary>
-    public bool MoveToPlayer { set; private get; } = false;
+    private Coroutine coroutine = null;
+    private SpriteRenderer spriteRenderer = null;
+    private BeeHit beeHit = null;
+
+    public bool HitFlag { private set; get; } = false;
 
     /// <summary>
     /// 移動座標の設定
     /// </summary>
     public Vector3 MovePos { set; private get; } = Vector3.zero;
 
-    private GameObject[] beeObject = null;
+    private bool moveFlag = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
+    public bool Chase { private set; get; } = false;
 
     // Update is called once per frame
     void Update()
     {
-        MovePos = MouseToWorld();
-        SetMoveFlag();
-
         BeeMove();
+
+        GetPlayerHitInfo();
     }
 
     /// <summary>
     /// 初期化
     /// </summary>
-    private void Init()
+    public void Init()
     {
-        beeObject = new GameObject[transform.childCount];
-        for(int i = 0; i < beeObject.Length; i++)
+        // 初回時の必要なコンポーネントを取得
+        if(spriteRenderer == null)
         {
-            beeObject[i] = transform.GetChild(i).gameObject;
+            spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         }
 
-        // スポーン地点を保存
-        spawnPos = new Vector3(transform.position.x, transform.position.y, 0);
+        if(beeHit == null)
+        {
+            beeHit = transform.GetChild(0).gameObject.GetComponent<BeeHit>();
+        }
 
-        MoveToPlayer = true;
+        Chase = false;
+        HitFlag = false;
     }
 
     /// <summary>
@@ -58,11 +55,13 @@ public class BeeControl : MonoBehaviour
     /// </summary>
     private void BeeMove()
     {
+        if(moveFlag == false) { return; }
+
         // 現在の位置情報を更新
         nowPos = new Vector3(transform.position.x, transform.position.y, 0);
 
         // 移動先の座標を設定する
-        Vector3 target = MoveToPlayer ? new Vector3(MovePos.x, MovePos.y, 0) : spawnPos;
+        Vector3 target = new Vector3(MovePos.x, MovePos.y, 0);
 
         // 移動方向によって向きを変える
         if (nowPos != target)
@@ -81,30 +80,96 @@ public class BeeControl : MonoBehaviour
         }
 
         // 移動処理
-        transform.position = Vector3.MoveTowards(nowPos, target, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(nowPos, target, (Chase ? speed : speed * 0.5f) * Time.deltaTime);
     }
 
     /// <summary>
-    /// テスト用の関数
+    /// プレイヤーと蜂が接触したかをチェックする
+    /// </summary>
+    private void GetPlayerHitInfo()
+    {
+        if(beeHit != null)
+        {
+            if (Chase == false || moveFlag == false) { beeHit.PlayerHit = false; }
+            HitFlag = Chase && moveFlag && beeHit.PlayerHit;
+        }
+        else
+        {
+            HitFlag = false;
+        }
+    }
+
+    /// <summary>
+    /// 蜂の生成アニメーションを再生
+    /// </summary>
+    public void SpawnAnimation()
+    {
+        if (coroutine != null) { StopCoroutine(coroutine); }
+        coroutine = StartCoroutine(BeeAnimation());
+    }
+
+    /// <summary>
+    /// 蜂の生成アニメーション
     /// </summary>
     /// <returns></returns>
-    private Vector3 MouseToWorld()
+    private IEnumerator BeeAnimation()
     {
-        Vector3 mouse = Input.mousePosition;
-        Camera main = Camera.main;
-        mouse.z = 10;
-        Vector3 pos = main.ScreenToWorldPoint(mouse);
-        return pos;
+        if (spriteRenderer == null) { yield break; }
+
+        // アニメーション開始前に初期化しておく
+        moveFlag = false;
+        Color baseColor = spriteRenderer.color;
+        spriteRenderer.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0);
+
+        // 1秒間に上方向に移動しながらフェードインを実行する
+        float time = 0;
+        float duration = 1.0f;
+        Vector3 start = transform.position;
+        Vector3 target = transform.position + Vector3.up * 1.0f;
+        while (time < duration)
+        {
+            float diff = time / duration;
+            transform.position = Vector3.Lerp(start, target, diff);
+            spriteRenderer.color = new Color(baseColor.r, baseColor.g, baseColor.b, baseColor.a * diff);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // アニメーション実行時間を経過したら正規化させる
+        transform.position = target;
+        spriteRenderer.color = baseColor;
+
+        // 0.5秒遅延処理を挟む
+        time = 0;
+        duration = 0.5f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // 蜂の初期化処理を実行
+        moveFlag = true;
+
+        // コルーチン完了処理
+        coroutine = null;
     }
 
     /// <summary>
-    /// テスト用の関数
+    /// 蜂の視界内に入ったら追跡を開始
     /// </summary>
-    private void SetMoveFlag()
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            MoveToPlayer = !MoveToPlayer;
-        }
+        Chase = true;
+    }
+
+    /// <summary>
+    /// 蜂の視界外に行ったら追跡を終了
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Chase = false;
     }
 }
