@@ -50,4 +50,8 @@ MonoBehaviour:
   createPos: []
   maxHoneyComb: 3
   maxBee: 5
-  playerTest: {fileID: 0}
+  speed: 1
+  maxMoveArea: 10
+  status: {fileID: 0}
+  hubPos: {x: 0, y: 0, z: 0}
+  hubArea: 2.5

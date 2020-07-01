@@ -16,7 +16,10 @@ public class HoneyMaster : MonoBehaviour
     [SerializeField, Header("蜂の巣の生成上限数"), Range(1, 15)] private int maxHoneyComb = 5;
     [SerializeField, Header("蜂の最大生成数"), Range(1, 15)] private int maxBee = 5;
     [SerializeField, Header("蜂の移動速度"), Range(1.0f, 5.0f)] private float speed = 1.0f;
+    [SerializeField, Header("蜂の巡回行動範囲"), Range(5.0f, 20.0f)] private float maxMoveArea = 10.0f;
     [SerializeField, Header("PlayStatusオブジェクト")] private PlayerStatus status = null;
+    [SerializeField, Header("拠点の中心座標")] private Vector3 hubPos = Vector3.zero;
+    [SerializeField, Header("拠点の判定範囲"), Range(1.0f, 5.0f)] private float hubArea = 1.0f;
 
     // 管理用の蜂の巣配列を用意
     private HoneyComb[] honeyComb = null;
@@ -29,7 +32,8 @@ public class HoneyMaster : MonoBehaviour
 
     private float[] randomMoveTime = null;
     private float[] spawnDelayTime = null;
-    private int[] lastPosID = null;
+    private bool[] fixPosition = null;
+    private bool playerInHub = false;  // プレイヤーが拠点にいる場合のフラグ
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +47,11 @@ public class HoneyMaster : MonoBehaviour
     {
         PlayerGPS();
         CheckState();
+
+        if (playerInHub)
+        {
+            Debug.Log("OK");
+        }
     }
 
     /// <summary>
@@ -89,18 +98,13 @@ public class HoneyMaster : MonoBehaviour
     {
         beeControl = new BeeControl[maxBee];
         randomMoveTime = new float[beeControl.Length];
-        lastPosID = new int[beeControl.Length];
+        fixPosition = new bool[beeControl.Length];
         for(int i = 0; i < beeControl.Length; i++)
         {
             beeControl[i] = Instantiate(beePrefab);
             beeControl[i].Speed = speed;
             beeControl[i].Init();
             beeControl[i].gameObject.SetActive(false);
-        }
-
-        for(int i = 0; i < lastPosID.Length; i++)
-        {
-            lastPosID[i] = createPos.Length;
         }
     }
 
@@ -204,7 +208,7 @@ public class HoneyMaster : MonoBehaviour
 
         foreach(var bee in beeControl)
         {
-            if (bee.HitFlag)
+            if (bee.HitFlag && playerInHub == false)
             {
                 HitToPlayer();
                 break;
@@ -234,43 +238,85 @@ public class HoneyMaster : MonoBehaviour
         {
             for(int i = 0; i < beeControl.Length; i++)
             {
-                if (beeControl[i].Chase)
+                if (beeControl[i].gameObject.activeSelf)
                 {
-                    Vector3 movePos;
-                    // 追跡状態のときはプレイヤーの座標に向かってくる
-                    if(status != null)
+                    if (beeControl[i].Chase && playerInHub == false)
                     {
-                        movePos = status.PlayerTransform.position;
+                        Vector3 movePos;
+                        // 追跡状態のときはプレイヤーの座標に向かってくる
+                        if (status != null)
+                        {
+                            movePos = status.PlayerTransform.position;
+                        }
+                        else
+                        {
+                            movePos = MouseToWorld();
+                        }
+                        beeControl[i].MasterControl = false;
+                        fixPosition[i] = false;
+                        beeControl[i].MovePos = movePos;
                     }
                     else
                     {
-                        movePos = MouseToWorld();
-                    }
-                    beeControl[i].MovePos = movePos;
-                }
-                else
-                {
-                    // 非追跡状態のときは蜂の巣の生成座標をランダムに取得して向かってくる
-                    randomMoveTime[i] += Time.deltaTime;
-                    if(randomMoveTime[i] > 5.0f)
-                    {
-                        int index = Random.Range(0, createPos.Length);
-
-                        while(index == lastPosID[i])
+                        // 非追跡状態のときは蜂の巣の生成座標をランダムに取得して向かってくる
+                        randomMoveTime[i] += Time.deltaTime;
+                        if (randomMoveTime[i] > 5.0f)
                         {
-                            index = Random.Range(0, createPos.Length);
+                            beeControl[i].MovePos = new Vector3(Random.Range(-maxMoveArea, maxMoveArea), Random.Range(-maxMoveArea, maxMoveArea), 0);
+
+                            fixPosition[i] = false;
+
+                            randomMoveTime[i] = 0;
                         }
 
-                        lastPosID[i] = index;
+                        // 蜂が拠点エリア内に侵入しないように座標を修正する
+                        Vector2 bee = new Vector2(beeControl[i].transform.position.x, beeControl[i].transform.position.y);
+                        Vector2 hub = new Vector2(hubPos.x, hubPos.y);
+                        if (bee.x > hub.x - hubArea && bee.x < hub.x + hubArea && bee.y > hub.y - hubArea && bee.y < hub.y + hubArea && fixPosition[i] == false)
+                        {
+                            fixPosition[i] = true;
 
-                        beeControl[i].MovePos = createPos[index];
+                            float x = hub.x + hubArea <= maxMoveArea ? Random.Range(hub.x + hubArea, maxMoveArea) : maxMoveArea;
+                            float y = hub.y + hubArea <= maxMoveArea ? Random.Range(hub.y + hubArea, maxMoveArea) : maxMoveArea;
+                            Vector3 target;
 
-                        randomMoveTime[i] = 0;
+                            if(bee.x > hub.x && bee.y > hub.y)
+                            {
+                                target = new Vector3(x, y, 0);
+                            }
+                            else if(bee.x > hub.x && bee.y <= hub.y)
+                            {
+                                target = new Vector3(x, y * -1, 0);
+                            }
+                            else if(bee.x <= hub.x && bee.y > hub.y)
+                            {
+                                target = new Vector3(x * -1, y, 0);
+                            }
+                            else
+                            {
+                                target = new Vector3(x * -1, y * -1, 0);
+                            }
+
+                            beeControl[i].MovePos = target;
+                        }
+
+                        beeControl[i].MasterControl = true;
                     }
-
-                    
                 }
             }
+        }
+
+        // プレイヤーが拠点付近にいるかチェック
+        if(status != null)
+        {
+            Vector2 playerPos = new Vector2(status.PlayerTransform.position.x, status.PlayerTransform.position.y);
+            Vector2 hubCenter = new Vector2(hubPos.x, hubPos.y);
+            float distance = Vector2.Distance(playerPos, hubCenter);
+            playerInHub = distance < hubArea;
+        }
+        else
+        {
+            playerInHub = false;
         }
     }
 

@@ -27,6 +27,11 @@ public class BeeControl : MonoBehaviour
 
     public bool Chase { private set; get; } = false;
 
+    /// <summary>
+    /// マスター側で制御するためのフラグ
+    /// </summary>
+    public bool MasterControl { set; private get; } = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -60,16 +65,17 @@ public class BeeControl : MonoBehaviour
     /// </summary>
     private void BeeMove()
     {
+        bool activate;
         try
         {
-            moveFlag = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+            activate = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
         }
         catch
         {
-
+            activate = true;
         }
 
-        if(moveFlag == false) { return; }
+        if(moveFlag == false || activate == false) { return; }
 
         // 現在の位置情報を更新
         nowPos = new Vector3(transform.position.x, transform.position.y, 0);
@@ -94,7 +100,7 @@ public class BeeControl : MonoBehaviour
         }
 
         // 移動処理
-        transform.position = Vector3.MoveTowards(nowPos, target, (Chase ? Speed : Speed * 0.5f) * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(nowPos, target, (Chase && MasterControl == false ? Speed : Speed * 0.5f) * Time.deltaTime);
     }
 
     /// <summary>
