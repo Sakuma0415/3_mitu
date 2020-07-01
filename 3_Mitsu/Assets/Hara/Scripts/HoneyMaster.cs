@@ -34,6 +34,7 @@ public class HoneyMaster : MonoBehaviour
     private float[] spawnDelayTime = null;
     private bool[] fixPosition = null;
     private bool playerInHub = false;  // プレイヤーが拠点にいる場合のフラグ
+    private bool gamePlay = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,12 +46,19 @@ public class HoneyMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerGPS();
-        CheckState();
-
-        if (playerInHub)
+        try
         {
-            Debug.Log("OK");
+            gamePlay = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+        }
+        catch
+        {
+            gamePlay = true;
+        }
+
+        if (gamePlay)
+        {
+            PlayerGPS();
+            CheckState();
         }
     }
 
@@ -148,7 +156,28 @@ public class HoneyMaster : MonoBehaviour
         }
         else
         {
-            index = Random.Range(0, list.Count);
+            // プレイヤーと最も距離が離れている蜂をリスポーン対象にする
+            if(status != null)
+            {
+                float saveDistance = 0;
+                int saveIndex = 0;
+                for(int i = 0; i < list.Count; i++)
+                {
+                    Vector2 player = new Vector2(status.PlayerTransform.position.x, status.PlayerTransform.position.y);
+                    Vector2 bee = new Vector2(beeControl[list[i]].transform.position.x, beeControl[list[i]].transform.position.y);
+                    float dis = Vector2.Distance(player, bee);
+                    if(saveDistance < dis)
+                    {
+                        saveDistance = dis;
+                        saveIndex = i;
+                    }
+                    index = saveIndex;
+                }
+            }
+            else
+            {
+                index = Random.Range(0, list.Count);
+            }
             index = list[index];
         }
 
