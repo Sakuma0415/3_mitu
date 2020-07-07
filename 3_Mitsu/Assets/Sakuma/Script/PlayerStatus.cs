@@ -39,6 +39,7 @@ public class PlayerStatus : MonoBehaviour
         Camera.main.GetComponent<CameraMove>().SeeSet(playerObject);
         playerObject.GetComponent<PlayerMove>().playerStatus = this;
         PlayerTransform = playerObject.GetComponent<Transform>();
+        ItemList.Instance.playerPos = playerObject.transform;
     }
 
     void Update()

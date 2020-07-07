@@ -16,6 +16,12 @@ public class ItemList : MonoBehaviour
 
     public bool noSpace=false;
 
+    public Transform playerPos;
+    [SerializeField]
+    HoneyMaster honeyMaster;
+
+    float angle = 0;
+
     private void Awake()
     {
         itemList = new int[6];
@@ -61,6 +67,13 @@ public class ItemList : MonoBehaviour
 
     public void ItemLost(int num)
     {
+        if(itemDataList[itemList[num]].itemName == "ハチの巣")
+        {
+            angle += 60;
+            Vector3[] lists = new Vector3[1];
+            lists[0] = playerPos.position + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), -0.1f)*1.3f;
+            honeyMaster.DropHoneyComb(lists);
+        }
         itemList[num] = -1;
 
     }
@@ -81,11 +94,6 @@ public class ItemList : MonoBehaviour
         Instance.itemCont = cont;
         Instance.noSpace = (cont == Instance.itemList.Length);
 
-
-
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            ItemGet("ハチの巣");
-        }
+        
     }
 }
