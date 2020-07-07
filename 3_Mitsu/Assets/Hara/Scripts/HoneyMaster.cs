@@ -5,6 +5,7 @@ using UnityEngine;
 public class HoneyMaster : MonoBehaviour
 {
     [SerializeField, Tooltip("蜂の巣Prefab")] private HoneyComb honeyCombPrefab = null;
+    [SerializeField, Tooltip("ドロップ蜂の巣Prefab")] private DropHoneyComb dropPrefab = null;
     [SerializeField, Tooltip("蜂Prefab")] private BeeControl beePrefab = null;
 
     [SerializeField, Header("蜂の巣を生成する予定地")] private Vector3[] createPos = null;
@@ -107,7 +108,13 @@ public class HoneyMaster : MonoBehaviour
     /// </summary>
     private void CreateDropHoneyComb()
     {
-
+        // 蜂の巣のインスタンスを生成（初回のみ）
+        dropHoneyComb = new DropHoneyComb[maxDrop];
+        for (int i = 0; i < dropHoneyComb.Length; i++)
+        {
+            dropHoneyComb[i] = Instantiate(dropPrefab);
+            dropHoneyComb[i].gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -378,7 +385,7 @@ public class HoneyMaster : MonoBehaviour
 
         for(int i = 0; i < dropPos.Length; i++)
         {
-            DropHoneyComb comb = dropHoneyComb[id];
+            var comb = dropHoneyComb[id];
 
             // ドロップする位置に蜂の巣を表示
             comb.transform.position = dropPos[i];
