@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class HoneyMaster : MonoBehaviour
@@ -21,8 +19,12 @@ public class HoneyMaster : MonoBehaviour
     [SerializeField, Header("拠点の中心座標")] private Vector3 hubPos = Vector3.zero;
     [SerializeField, Header("拠点の判定範囲"), Range(1.0f, 5.0f)] private float hubArea = 1.0f;
 
+    [SerializeField, Header("蜂の巣のフィールドに落とせる最大量"), Range(1, 15)] private int maxDrop = 5;
+    private int dropID = 0;
+
     // 管理用の蜂の巣配列を用意
     private HoneyComb[] honeyComb = null;
+    private DropHoneyComb[] dropHoneyComb = null;
 
     // 管理用の蜂の配列を用意
     private BeeControl[] beeControl = null;
@@ -40,6 +42,7 @@ public class HoneyMaster : MonoBehaviour
     void Start()
     {
         CreateHoneyComb();
+        CreateDropHoneyComb();
         CreateBee();
     }
 
@@ -97,6 +100,14 @@ public class HoneyMaster : MonoBehaviour
             comb.SetHoney();
             locationIDList.RemoveAt(index);
         }
+    }
+
+    /// <summary>
+    /// ドロップ用の蜂の巣を用意しておく
+    /// </summary>
+    private void CreateDropHoneyComb()
+    {
+
     }
 
     /// <summary>
@@ -358,10 +369,26 @@ public class HoneyMaster : MonoBehaviour
     }
 
     /// <summary>
-    /// アイテム(蜂)を捨てた際に呼び出す処理
+    /// 蜂の巣をドロップするときに呼び出す処理
     /// </summary>
-    public void DropHoneyComb(Vector3 dropPos)
+    /// <param name="dropPos">ドロップする座標情報</param>
+    public void DropHoneyComb(Vector3[] dropPos)
     {
+        int id = dropID;
 
+        for(int i = 0; i < dropPos.Length; i++)
+        {
+            DropHoneyComb comb = dropHoneyComb[id];
+
+            // ドロップする位置に蜂の巣を表示
+            comb.transform.position = dropPos[i];
+            comb.SetHoney();
+
+            // 管理番号を更新
+            id++;
+            if(id >= maxDrop) { id = 0; }
+        }
+
+        dropID = id;
     }
 }

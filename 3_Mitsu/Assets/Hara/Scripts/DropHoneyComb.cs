@@ -2,24 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoneyComb : MonoBehaviour
+public class DropHoneyComb : MonoBehaviour
 {
     private bool hitPlayer = false;
-
-    /// <summary>
-    /// 蜂の生成を許可するフラグ
-    /// </summary>
-    public bool SpawnFlag { private set; get; } = false;
-
-    /// <summary>
-    /// 蜂の巣の設置個所ID
-    /// </summary>
-    public int LocationID { set; get; } = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     private void Update()
@@ -58,9 +48,6 @@ public class HoneyComb : MonoBehaviour
         // 蜂の巣を非表示にする
         gameObject.SetActive(false);
 
-        // 蜂の呼び出しフラグをONにする
-        SpawnFlag = true;
-
         // プレイヤー側にデータを渡す
         ItemList.Instance.ItemGet("ハチの巣");
     }
@@ -71,8 +58,6 @@ public class HoneyComb : MonoBehaviour
     public void SetHoney()
     {
         gameObject.SetActive(true);
-
-        SpawnFlag = false;
     }
 
     /// <summary>
