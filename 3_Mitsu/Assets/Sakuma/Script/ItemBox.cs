@@ -27,7 +27,7 @@ public class ItemBox : MonoBehaviour
 
                 if(Mathf.Abs ( BoxPos[i].position.x- screenPoint.x)<82&& Mathf.Abs(BoxPos[i].position.y - screenPoint.y) < 82&&ItemList .Instance.itemList[i]!=-1)
                 {
-                    Debug.Log(i);
+                    //Debug.Log(i);
                     botc= Instantiate(bot, screenPoint, Quaternion.identity, transform);
                     botc.GetComponent<ItemLost>().lostNum = i;
                     botc.GetComponent<ItemLost>().itemBox  = this;
