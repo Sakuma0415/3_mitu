@@ -356,4 +356,12 @@ public class HoneyMaster : MonoBehaviour
     {
         Debug.Log("接触しました");
     }
+
+    /// <summary>
+    /// アイテム(蜂)を捨てた際に呼び出す処理
+    /// </summary>
+    public void DropHoneyComb(Vector3 dropPos)
+    {
+
+    }
 }

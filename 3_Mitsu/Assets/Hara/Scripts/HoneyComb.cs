@@ -49,7 +49,7 @@ public class HoneyComb : MonoBehaviour
         SpawnFlag = true;
 
         // プレイヤー側にデータを渡す
-
+        ItemList.Instance.ItemGet("ハチの巣");
     }
 
     /// <summary>
