@@ -26,7 +26,20 @@ public class CameraMove : MonoBehaviour
                 new Vector3(targetTransform.position.x, targetTransform.position.y, -10),
                 0.05f);
 
+            if(Physics2D.BoxCastAll(transform.position, new Vector2(17.77778f, 10f), 0, Vector2.right, (pos .x- transform.position.x),layerMask ).Length > 0)
+            {
+                pos.x = transform.position.x;
+            }
+            if (Physics2D.BoxCastAll(transform.position, new Vector2(17.77778f, 10f), 0, Vector2.up, (pos.y - transform.position.y), layerMask).Length > 0)
+            {
+                pos.y = transform.position.y;
+            }
+
+            //if( Physics2D.OverlapBoxAll(pos, new Vector2(17.77778f, 10f), 0, layerMask).Length <= 0)
+            //{
             rigidbody2D.transform.position = pos;
+            //}
+                
 
         }
     }

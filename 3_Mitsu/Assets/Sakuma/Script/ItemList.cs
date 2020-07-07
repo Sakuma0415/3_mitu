@@ -12,6 +12,8 @@ public class ItemList : MonoBehaviour
 
     public int[] itemList ;
 
+    public int itemCont = 0;
+
     public bool noSpace=false;
 
     private void Awake()
@@ -76,8 +78,14 @@ public class ItemList : MonoBehaviour
             }
 
         }
-
+        Instance.itemCont = cont;
         Instance.noSpace = (cont == Instance.itemList.Length);
 
+
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            ItemGet("ハチの巣");
+        }
     }
 }

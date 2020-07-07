@@ -557,6 +557,8 @@ MonoBehaviour:
   itemDataList:
   - {fileID: 11400000, guid: e5c770bae2d87c242b68014cc6cd14a9, type: 2}
   itemList: 
+  itemCont: 0
+  noSpace: 0
 --- !u!4 &129867871
 Transform:
   m_ObjectHideFlags: 0
@@ -673,7 +675,7 @@ MonoBehaviour:
   size: {x: 17.77778, y: 10}
   layerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 512
 --- !u!61 &129972937
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3667,6 +3669,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 3131985616674400340, guid: eb7a52d1e25c35947afbfb9d78836d03,
     type: 3}
   spead: 3.5
+  down: 1.5
   speadmaximumTime: 0.2
   PlayerTransform: {fileID: 0}
 --- !u!4 &1367693855

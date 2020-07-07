@@ -14,6 +14,8 @@ public class PlayerStatus : MonoBehaviour
     GameObject playerPrefab;
     //プレイヤーの移動速度
     public float spead=0;
+    //プレイヤーの移動速度の減少亮
+    public float down = 0;
     //プレイヤーの最高速度になるまでの時間
     public float speadmaximumTime = 0;
     //プレイヤーのトランスフォーム
