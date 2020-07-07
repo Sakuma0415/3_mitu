@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
     [SerializeField]
     Image MaskImage;
     [SerializeField]
-    GameObject gameObject;
+    GameObject MgameObject;
     void Update()
     {
         if (!IsAnime&&Input.GetKeyDown (KeyCode.Tab))
@@ -51,7 +51,10 @@ public class Menu : MonoBehaviour
         MaskImage.color = new Color(MaskImage.color.r, MaskImage.color.g, MaskImage.color.b, 0.5f);
         IsAnime = false ;
         IsMenu = true;
-        gameObject.SetActive(true);
+        MgameObject.SetActive(true);
+        ItemBox itemBox = MgameObject.GetComponent<ItemBox>();
+        itemBox.botb = false;
+        Destroy(itemBox.botc); 
         yield return null;
     }
 
@@ -60,7 +63,7 @@ public class Menu : MonoBehaviour
         MaskImage.enabled = true;
         float time = 0;
         IsAnime = true;
-        gameObject.SetActive(false);
+        MgameObject.SetActive(false);
         MaskImage.color = new Color(MaskImage.color.r, MaskImage.color.g, MaskImage.color.b, 0.5f);
         while (time < 0.5f)
         {
