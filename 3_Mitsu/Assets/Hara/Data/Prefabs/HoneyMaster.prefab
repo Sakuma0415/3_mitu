@@ -45,6 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   honeyCombPrefab: {fileID: 597947585432896067, guid: 9b3cab59cfae5ef4788c9d58ef62dc22,
     type: 3}
+  dropPrefab: {fileID: 2042941850538027693, guid: 36af75a639c51384cbcca45e7664ac30,
+    type: 3}
   beePrefab: {fileID: 5764740256048564410, guid: 32fec6f17500607428d5d90530b66766,
     type: 3}
   createPos: []
@@ -55,3 +57,4 @@ MonoBehaviour:
   status: {fileID: 0}
   hubPos: {x: 0, y: 0, z: 0}
   hubArea: 2.5
+  maxDrop: 10
