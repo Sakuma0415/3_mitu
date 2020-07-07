@@ -12,6 +12,8 @@ public class ItemList : MonoBehaviour
 
     public int[] itemList ;
 
+    public bool noSpace=false;
+
     private void Awake()
     {
         itemList = new int[6];
@@ -63,9 +65,19 @@ public class ItemList : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.I))
+        
+        int cont = 0;
+        for (int i = 0; i < Instance.itemList.Length; i++)
         {
-            ItemList.Instance.ItemGet("ハチの巣");
+
+            if (Instance.itemList[i] != -1)
+            {
+                cont++;
+            }
+
         }
+
+        Instance.noSpace = (cont == Instance.itemList.Length);
+
     }
 }
