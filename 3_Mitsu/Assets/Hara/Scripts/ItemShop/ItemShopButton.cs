@@ -34,7 +34,14 @@ public class ItemShopButton : MonoBehaviour
         if(itemPriceText != null)
         {
             // 値段をセット
-            itemPriceText.text = itemPrice.ToString() + " 円";
+            if(itemPrice <= 0)
+            {
+                itemPriceText.text = "無料";
+            }
+            else
+            {
+                itemPriceText.text = itemPrice.ToString() + " 円";
+            }
         }
 
         // 購入処理をセット

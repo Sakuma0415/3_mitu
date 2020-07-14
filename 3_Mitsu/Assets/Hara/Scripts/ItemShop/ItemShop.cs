@@ -17,6 +17,7 @@ public class ItemShop : MonoBehaviour
     private int money = 0;
 
     private Coroutine coroutine = null;
+    private bool isConnectItemList = false;
 
     // Start is called before the first frame update
     void Start()
@@ -57,10 +58,11 @@ public class ItemShop : MonoBehaviour
                     // 商品情報を取得する
                     string itemName = itemDatas[num].itemName;
                     Sprite itemSprite = itemDatas[num].itemSprite;
-                    int itemPrice = 1000;
+                    int itemPrice = itemDatas[num].price;
+                    if(itemPrice < 0) { itemPrice = 0; }
 
                     // ボタン処理を実装する
-                    shopButton[num].SetButtonAction(itemName, itemSprite, itemPrice, () => ItemBuy(itemPrice, false, shopButton[num].ShopButton));
+                    shopButton[num].SetButtonAction(itemName, itemSprite, itemPrice, () => ItemBuy(itemName, itemPrice, true, shopButton[num]));
                 }
             }
         }
@@ -83,7 +85,20 @@ public class ItemShop : MonoBehaviour
         GameStatus.Instance.ChangeGameMode(GameStatus.GameMode.Pause);
 
         // 所持金の情報を取得する
-        money = 10000;
+        try
+        {
+            money = ItemList.Instance.okane;
+            isConnectItemList = true;
+            if(money < 0)
+            {
+                money = 0;
+            }
+        }
+        catch
+        {
+            money = 0;
+            isConnectItemList = false;
+        }
         moneyText.text = money.ToString() + " 円";
     }
 
@@ -107,16 +122,20 @@ public class ItemShop : MonoBehaviour
         }
 
         // 所持金をスコアに反映する
-
+        if (isConnectItemList)
+        {
+            ItemList.Instance.okane = money;
+        }
     }
 
     /// <summary>
     /// 購入処理
     /// </summary>
+    /// <param name="itemName">商品名</param>
     /// <param name="price">値段</param>
     /// <param name="onlyOnceBuy">一回しか購入できないならtrue</param>
-    /// <param name="button">制御するボタン</param>
-    public void ItemBuy(int price, bool onlyOnceBuy, Button button)
+    /// <param name="shopButton">制御するボタン</param>
+    public void ItemBuy(string itemName, int price, bool onlyOnceBuy, ItemShopButton shopButton)
     {
         // 所持金チェック
         if(Pay(price) == false || ItemList.Instance.noSpace) { return; }
@@ -124,13 +143,18 @@ public class ItemShop : MonoBehaviour
         if (onlyOnceBuy)
         {
             // 一度購入したらボタンを押せないようにする
-            button.interactable = false;
+            shopButton.ShopButton.interactable = false;
         }
 
         // アイテムをインベントリに追加する処理
-
+        ItemList.Instance.ItemGet(itemName);
     }
 
+    /// <summary>
+    /// 支払いできるかチェックする
+    /// </summary>
+    /// <param name="price">支払金額</param>
+    /// <returns></returns>
     private bool Pay(int price)
     {
         // 金額の計算を実行
@@ -156,15 +180,18 @@ public class ItemShop : MonoBehaviour
     {
         if(moneyText != null)
         {
-            float time = 0;
-
-            while (time < duration)
+            if(start != end)
             {
-                float rate = time / duration;
-                int diff = start - (int)(Mathf.Abs(start - end) * rate);
-                moneyText.text = diff.ToString() + " 円";
-                time += Time.deltaTime;
-                yield return null;
+                float time = 0;
+
+                while (time < duration)
+                {
+                    float rate = time / duration;
+                    int diff = start - (int)(Mathf.Abs(start - end) * rate);
+                    moneyText.text = diff.ToString() + " 円";
+                    time += Time.deltaTime;
+                    yield return null;
+                }
             }
 
             moneyText.text = end.ToString() + " 円";

@@ -13,5 +13,5 @@ public class ItemData : ScriptableObject
     //画像
     public Sprite itemSprite;
     //値段
-    public float price;
+    public int price;
 }
