@@ -11,8 +11,6 @@ public class ItemShop : MonoBehaviour
     [SerializeField, Tooltip("ショップボタンを格納しているオブジェクト")] private GameObject itemList = null;
     private ItemShopButton[] shopButton = null;
 
-    public bool IsShopping { private set; get; } = false;
-
     [SerializeField, Header("販売商品リスト")] private ItemData[] itemDatas = null;
 
     // 所持金の情報を扱う変数
@@ -87,9 +85,6 @@ public class ItemShop : MonoBehaviour
         // 所持金の情報を取得する
         money = 10000;
         moneyText.text = money.ToString() + " 円";
-
-        // ショップウィンドウフラグをオン
-        IsShopping = true;
     }
 
     /// <summary>
@@ -113,8 +108,6 @@ public class ItemShop : MonoBehaviour
 
         // 所持金をスコアに反映する
 
-        // ショップウィンドウフラグをオフ
-        IsShopping = false;
     }
 
     /// <summary>

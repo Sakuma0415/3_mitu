@@ -7,7 +7,6 @@ public class Merchant : MonoBehaviour
     private bool hitPlayer = false;
 
     [SerializeField, Tooltip("アイテムショップ")] private ItemShop shop = null;
-    public bool IsOpenShop { private set; get; } = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +18,18 @@ public class Merchant : MonoBehaviour
     {
         // 蜂の巣を採取できる状態かチェック
         bool input = hitPlayer;
+        bool isPlay;
 
-        if (input)
+        try
+        {
+            isPlay = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+        }
+        catch
+        {
+            isPlay = true;
+        }
+
+        if (input && isPlay)
         {
             Debug.Log("アイテム買えるよ");
             if (Input.GetKeyDown(KeyCode.Space))
@@ -28,8 +37,6 @@ public class Merchant : MonoBehaviour
                 ShowItemShop();
             }
         }
-
-        IsOpenShop = shop != null && shop.IsShopping;
     }
 
     /// <summary>
