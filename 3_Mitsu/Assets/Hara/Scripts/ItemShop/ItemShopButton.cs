@@ -8,6 +8,7 @@ public class ItemShopButton : MonoBehaviour
     [SerializeField, Tooltip("商品名のテキスト")] private Text itemNameText = null;
     [SerializeField, Tooltip("商品画像")] private Image itemImage = null;
     [SerializeField, Tooltip("商品の値段テキスト")] private Text itemPriceText = null;
+    public Text ItemPriceText { get { return itemPriceText; } }
     public Button ShopButton { private set; get; } = null;
 
     /// <summary>

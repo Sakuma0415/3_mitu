@@ -144,6 +144,7 @@ public class ItemShop : MonoBehaviour
         {
             // 一度購入したらボタンを押せないようにする
             shopButton.ShopButton.interactable = false;
+            shopButton.ItemPriceText.text = "売り切れ";
         }
 
         // アイテムをインベントリに追加する処理

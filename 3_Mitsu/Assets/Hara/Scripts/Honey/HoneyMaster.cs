@@ -39,6 +39,11 @@ public class HoneyMaster : MonoBehaviour
     private bool playerInHub = false;  // プレイヤーが拠点にいる場合のフラグ
     private bool gamePlay = false;
 
+    /// <summary>
+    /// プレイヤーと蜂が接触した時のフラグ
+    /// </summary>
+    public bool IsHitPlayer { private set; get; } = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -255,11 +260,9 @@ public class HoneyMaster : MonoBehaviour
 
         foreach(var bee in beeControl)
         {
-            if (bee.HitFlag && playerInHub == false)
-            {
-                HitToPlayer();
-                break;
-            }
+            IsHitPlayer = bee.HitFlag && playerInHub == false;
+
+            if (IsHitPlayer) { break; }
         }
     }
 
@@ -365,14 +368,6 @@ public class HoneyMaster : MonoBehaviour
         {
             playerInHub = false;
         }
-    }
-
-    /// <summary>
-    /// 蜂がプレイヤーに接触した時に呼び出す処理
-    /// </summary>
-    private void HitToPlayer()
-    {
-        Debug.Log("接触しました");
     }
 
     /// <summary>
