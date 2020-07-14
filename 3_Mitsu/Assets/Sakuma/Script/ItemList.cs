@@ -16,6 +16,8 @@ public class ItemList : MonoBehaviour
 
     public bool noSpace=false;
 
+    public int okane = 0;
+
     public Transform playerPos;
     [SerializeField]
     HoneyMaster honeyMaster;
