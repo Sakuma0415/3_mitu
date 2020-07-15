@@ -65,7 +65,6 @@ MonoBehaviour:
   itemNameText: {fileID: 2005390628307224513}
   itemImage: {fileID: 9031266168106564986}
   itemPriceText: {fileID: 2324007207084552605}
-  button: {fileID: 5090750894785314351}
 --- !u!114 &4078971395438554107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +363,86 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1330443676067420135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8177039773650681122}
+  - component: {fileID: 655839900690807489}
+  m_Layer: 0
+  m_Name: image (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8177039773650681122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330443676067420135}
+  m_LocalRotation: {x: -0, y: -0, z: -0.27765003, w: 0.96068233}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.3}
+  m_Children: []
+  m_Father: {fileID: 6752626255034943443}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -32.24}
+--- !u!212 &655839900690807489
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330443676067420135}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: e0f62ec22e50dbc42b8c5792c7deab9d, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2.5, y: 1.84}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2468195137265631254
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +581,6 @@ MonoBehaviour:
   itemNameText: {fileID: 2898963861880058636}
   itemImage: {fileID: 7085073310790374256}
   itemPriceText: {fileID: 934349480102062618}
-  button: {fileID: 8523872897796446190}
 --- !u!114 &328407229987078379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,7 +871,6 @@ MonoBehaviour:
   itemNameText: {fileID: 5711472721529902427}
   itemImage: {fileID: 6488757935360240858}
   itemPriceText: {fileID: 8050549325221869939}
-  button: {fileID: 6296290119542591757}
 --- !u!114 &442195752817076469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,7 +1007,6 @@ MonoBehaviour:
   itemNameText: {fileID: 5026846219846583211}
   itemImage: {fileID: 3807419345571931436}
   itemPriceText: {fileID: 2701011407077318976}
-  button: {fileID: 1845350166014053348}
 --- !u!114 &2814906422676360712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,7 +1293,6 @@ MonoBehaviour:
   itemNameText: {fileID: 1019855974536210126}
   itemImage: {fileID: 5889940282174427335}
   itemPriceText: {fileID: 2322332313754812344}
-  button: {fileID: 3793406547027511241}
 --- !u!114 &7794617186693922549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,7 +1506,6 @@ MonoBehaviour:
   itemNameText: {fileID: 5783962709588411122}
   itemImage: {fileID: 5000252979878312712}
   itemPriceText: {fileID: 7509740471908048207}
-  button: {fileID: 6287477876650667949}
 --- !u!114 &3806406198532141709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,7 +1719,6 @@ MonoBehaviour:
   itemNameText: {fileID: 2079448559535319363}
   itemImage: {fileID: 3878425986265106743}
   itemPriceText: {fileID: 9023476957831653292}
-  button: {fileID: 7664758905210576598}
 --- !u!114 &2573929425774642387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2458,7 +2531,6 @@ MonoBehaviour:
   itemNameText: {fileID: 5022021537217372528}
   itemImage: {fileID: 5022021535681577494}
   itemPriceText: {fileID: 5022021536523461028}
-  button: {fileID: 5022021537130521867}
 --- !u!114 &5022021537130521866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2639,7 +2711,7 @@ RectTransform:
   m_Children:
   - {fileID: 5022021537055215069}
   m_Father: {fileID: 6752626255034943443}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3225,7 +3297,6 @@ MonoBehaviour:
   itemNameText: {fileID: 1818961141762368107}
   itemImage: {fileID: 2846324428187025626}
   itemPriceText: {fileID: 4373075400062981737}
-  button: {fileID: 2122975957135432516}
 --- !u!114 &8398982761109124146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3626,13 +3697,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6752626254233157835}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.27765003, w: 0.96068233}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.3}
   m_Children: []
   m_Father: {fileID: 6752626255034943443}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -32.24}
 --- !u!212 &6752626254233157845
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3671,7 +3742,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6ac552c7c2084444e86d67bcdb83a491, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4edaf62d3d1989249878fbcbc9b2d673, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3697,7 +3768,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1
 --- !u!1 &6752626255034943441
 GameObject:
   m_ObjectHideFlags: 0
@@ -3727,6 +3798,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 8177039773650681122}
   - {fileID: 6752626254233157834}
   - {fileID: 5022021537262010741}
   m_Father: {fileID: 0}
@@ -3980,7 +4052,6 @@ MonoBehaviour:
   itemNameText: {fileID: 6914673401782188549}
   itemImage: {fileID: 3941561206445255460}
   itemPriceText: {fileID: 7078526616277112247}
-  button: {fileID: 7700314138546226881}
 --- !u!114 &6191040060387292958
 MonoBehaviour:
   m_ObjectHideFlags: 0
