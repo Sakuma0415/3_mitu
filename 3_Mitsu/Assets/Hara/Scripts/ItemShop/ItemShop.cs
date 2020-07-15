@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ItemShop : MonoBehaviour
@@ -28,7 +29,8 @@ public class ItemShop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // ボタン選択状態を解除する
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     /// <summary>
@@ -115,7 +117,7 @@ public class ItemShop : MonoBehaviour
         // ゲームモードをPlayにする
         GameStatus.Instance.ChangeGameMode(GameStatus.GameMode.Play);
 
-        if(coroutine != null)
+        if (coroutine != null)
         {
             StopCoroutine(coroutine);
             coroutine = null;

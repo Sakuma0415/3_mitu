@@ -29,12 +29,11 @@ public class Merchant : MonoBehaviour
             isPlay = true;
         }
 
-        if (input && isPlay)
+        if (input)
         {
-            Debug.Log("アイテム買えるよ");
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ShowItemShop();
+                ItemShopActive(isPlay);
             }
         }
     }
@@ -53,17 +52,25 @@ public class Merchant : MonoBehaviour
     /// <summary>
     /// アイテムショップにアクセスする
     /// </summary>
-    private void ShowItemShop()
+    /// <param name="open">開く・閉じる</param>
+    private void ItemShopActive(bool open)
     {
         if(shop == null) { return; }
-        shop.OpenShop();
+        if (open)
+        {
+            shop.OpenShop();
+        }
+        else
+        {
+            shop.CloseShop();
+        }
     }
 
     /// <summary>
     /// 商人とプレイヤーが接触しているとき
     /// </summary>
     /// <param name="collision"></param>
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         hitPlayer = true;
     }
