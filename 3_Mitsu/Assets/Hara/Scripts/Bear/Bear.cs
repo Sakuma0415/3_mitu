@@ -81,10 +81,22 @@ public class Bear : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 熊のスポーンアニメーションを実行
+    /// </summary>
     public void SpawnBear()
     {
         if (coroutine != null) { StopCoroutine(coroutine); }
         coroutine = StartCoroutine(SpawnAnimation());
+    }
+
+    /// <summary>
+    /// 熊の退散アニメーションを実行
+    /// </summary>
+    public void ReturnBear()
+    {
+        if(coroutine != null) { StopCoroutine(coroutine); }
+        coroutine = StartCoroutine(ReturnAnimation());
     }
 
     /// <summary>
@@ -115,10 +127,10 @@ public class Bear : MonoBehaviour
     }
 
     /// <summary>
-    /// 熊が森に帰る(退散する)処理
+    /// 熊が森に帰る(退散する)アニメーション処理
     /// </summary>
     /// <returns></returns>
-    private IEnumerable ReturnAnimation()
+    private IEnumerator ReturnAnimation()
     {
         IsArrived = true;
         TargetPos = SpawnPos;

@@ -14,6 +14,8 @@ public class BearMaster : MonoBehaviour
     [SerializeField, Header("熊が向かう場所(座標)")] private Vector3 bearTargetPos = Vector3.zero;
     [SerializeField, Header("有効範囲"), Range(0f, 5.0f)] private float targetArea = 1.0f;
 
+    private float timer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,8 @@ public class BearMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        SpawnBear();
+        CheckBearState();
     }
 
     /// <summary>
@@ -45,6 +48,87 @@ public class BearMaster : MonoBehaviour
             bears[i] = Instantiate(bearPrefab);
             bears[i].BearInit();
             bears[i].gameObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// 熊をスポーンさせる処理
+    /// </summary>
+    private void SpawnBear()
+    {
+        // ゲームモードがプレイ中かチェック
+        bool isActve;
+        try
+        {
+            isActve = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+        }
+        catch
+        {
+            isActve = true;
+        }
+
+        if (isActve == false) { return; }
+
+        float spawnDuration;
+
+        // スポーンレベルに応じたスポーン間隔を設定、0ならばスポーンはしない
+        if(spawnLevel < 1)
+        {
+            timer = 0;
+            return;
+        }
+        else
+        {
+            spawnDuration = spawnTime - spawnTime * (0.2f * ((spawnLevel > 5 ? 5 : spawnLevel) - 1));
+            if(spawnDuration < 0) { spawnDuration = 0; }
+        }
+
+        if(timer < spawnDuration)
+        {
+            timer += Time.deltaTime;
+            return;
+        }
+        timer = 0;
+
+        // 非アクティブな熊がいるかチェック
+        int count = 0;
+        foreach(var bear in bears)
+        {
+            if(bear.gameObject.activeSelf == false)
+            {
+                break;
+            }
+            count++;
+        }
+        if (count < bears.Length)
+        {
+            // スポーン位置の設定
+            float angle = Random.Range(0, 360);
+            float radius = Random.Range(8.0f, 10.0f);
+            float rad = angle * Mathf.Deg2Rad;
+            float px = Mathf.Cos(rad) * radius + bearTargetPos.x;
+            float py = Mathf.Sin(rad) * radius + bearTargetPos.y;
+            Vector2 spawnPos = new Vector2(px, py);
+
+            bears[count].transform.position = spawnPos;
+            bears[count].SpawnPos = spawnPos;
+            bears[count].TargetPos = bearTargetPos;
+            bears[count].gameObject.SetActive(true);
+            bears[count].SpawnBear();
+        }
+    }
+
+    /// <summary>
+    /// 熊が製造機に着いたかをチェック
+    /// </summary>
+    private void CheckBearState()
+    {
+        foreach(var bear in bears)
+        {
+            if(Vector2.Distance(bear.transform.position, bearTargetPos) < targetArea)
+            {
+                bear.IsArrived = true;
+            }
         }
     }
 }
