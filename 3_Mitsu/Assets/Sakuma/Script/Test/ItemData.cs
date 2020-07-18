@@ -14,4 +14,6 @@ public class ItemData : ScriptableObject
     public Sprite itemSprite;
     //値段
     public int price;
+    // 無限に購入できる
+    public bool Infinity;
 }

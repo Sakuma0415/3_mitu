@@ -62,9 +62,10 @@ public class ItemShop : MonoBehaviour
                     Sprite itemSprite = itemDatas[num].itemSprite;
                     int itemPrice = itemDatas[num].price;
                     if(itemPrice < 0) { itemPrice = 0; }
+                    bool infinity = itemDatas[num].Infinity;
 
                     // ボタン処理を実装する
-                    shopButton[num].SetButtonAction(itemName, itemSprite, itemPrice, () => ItemBuy(itemName, itemPrice, true, shopButton[num]));
+                    shopButton[num].SetButtonAction(itemName, itemSprite, itemPrice, () => ItemBuy(itemName, itemPrice, infinity, shopButton[num]));
                 }
             }
         }
@@ -135,14 +136,14 @@ public class ItemShop : MonoBehaviour
     /// </summary>
     /// <param name="itemName">商品名</param>
     /// <param name="price">値段</param>
-    /// <param name="onlyOnceBuy">一回しか購入できないならtrue</param>
+    /// <param name="infinityBuy">無制限に購入できる</param>
     /// <param name="shopButton">制御するボタン</param>
-    public void ItemBuy(string itemName, int price, bool onlyOnceBuy, ItemShopButton shopButton)
+    public void ItemBuy(string itemName, int price, bool infinityBuy, ItemShopButton shopButton)
     {
         // 所持金チェック
         if(Pay(price) == false || ItemList.Instance.noSpace) { return; }
         
-        if (onlyOnceBuy)
+        if (infinityBuy == false)
         {
             // 一度購入したらボタンを押せないようにする
             shopButton.ShopButton.interactable = false;

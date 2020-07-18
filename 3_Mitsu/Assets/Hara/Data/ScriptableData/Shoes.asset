@@ -15,3 +15,4 @@ MonoBehaviour:
   itemName: "\u4FCA\u8DB3\u30B7\u30E5\u30FC\u30BA"
   itemSprite: {fileID: 21300000, guid: 6a278ce1966a04e4a9625545ef51a66a, type: 3}
   price: 3000
+  Infinity: 0
