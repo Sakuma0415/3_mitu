@@ -6,6 +6,15 @@ public class BearMaster : MonoBehaviour
 {
     [SerializeField, Tooltip("熊のPrefab")] private Bear bearPrefab = null;
     private Bear[] bears = null;
+    
+    private enum BearState
+    {
+        Standby,
+        Start,
+        Arrived,
+        Return
+    }
+    [SerializeField] private BearState[] bearStates = null;
 
     [SerializeField, Header("熊の生成上限数"), Range(1, 10)] private int maxBear = 5;
     [SerializeField, Header("熊の移動速度"), Range(1.0f, 5.0f)] private float bearSpeed = 1.0f;
@@ -25,8 +34,8 @@ public class BearMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SpawnBear();
         CheckBearState();
+        SpawnBear();
     }
 
     /// <summary>
@@ -43,11 +52,16 @@ public class BearMaster : MonoBehaviour
     private void CreateBear()
     {
         bears = new Bear[maxBear];
-        for(int i = 0; i < bears.Length; i++)
+        bearStates = new BearState[bears.Length];
+        for (int i = 0; i < bears.Length; i++)
         {
             bears[i] = Instantiate(bearPrefab);
-            bears[i].BearInit();
             bears[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < bearStates.Length; i++)
+        {
+            bearStates[i] = BearState.Standby;
         }
     }
 
@@ -69,39 +83,30 @@ public class BearMaster : MonoBehaviour
 
         if (isActve == false) { return; }
 
-        float spawnDuration;
-
-        // スポーンレベルに応じたスポーン間隔を設定、0ならばスポーンはしない
-        if(spawnLevel < 1)
-        {
-            timer = 0;
-            return;
-        }
-        else
-        {
-            spawnDuration = spawnTime - spawnTime * (0.2f * ((spawnLevel > 5 ? 5 : spawnLevel) - 1));
-            if(spawnDuration < 0) { spawnDuration = 0; }
-        }
-
-        if(timer < spawnDuration)
-        {
-            timer += Time.deltaTime;
-            return;
-        }
-        timer = 0;
-
-        // 非アクティブな熊がいるかチェック
+        // 熊を生成できる状態かチェック
         int count = 0;
-        foreach(var bear in bears)
+        foreach(var state in bearStates)
         {
-            if(bear.gameObject.activeSelf == false)
+            if(state == BearState.Standby)
             {
                 break;
             }
             count++;
         }
-        if (count < bears.Length)
+
+        bool isCanSpawn = count < bearStates.Length && spawnLevel > 0;
+        if (isCanSpawn)
         {
+            float spawnDuration = spawnTime - spawnTime * (0.2f * ((spawnLevel > 5 ? 5 : spawnLevel) - 1));
+            if (spawnDuration < 0) { spawnDuration = 0; }
+
+            if (timer < spawnDuration)
+            {
+                timer += Time.deltaTime;
+                return;
+            }
+            timer = 0;
+
             // スポーン位置の設定
             float angle = Random.Range(0, 360);
             float radius = Random.Range(8.0f, 10.0f);
@@ -113,21 +118,41 @@ public class BearMaster : MonoBehaviour
             bears[count].transform.position = spawnPos;
             bears[count].SpawnPos = spawnPos;
             bears[count].TargetPos = bearTargetPos;
+            bears[count].BearSpeed = bearSpeed;
+            bearStates[count] = BearState.Start;
+            bears[count].BearInit();
             bears[count].gameObject.SetActive(true);
-            bears[count].SpawnBear();
         }
     }
 
     /// <summary>
-    /// 熊が製造機に着いたかをチェック
+    /// 熊のステータスをチェック
     /// </summary>
     private void CheckBearState()
     {
-        foreach(var bear in bears)
+        
+        for(int i = 0; i < bears.Length; i++)
         {
-            if(Vector2.Distance(bear.transform.position, bearTargetPos) < targetArea)
+            // 熊が製造機にたどり着いたかをチェック
+            if (Vector2.Distance(bears[i].transform.position, bearTargetPos) < targetArea && bearStates[i] == BearState.Start)
             {
-                bear.IsArrived = true;
+                bears[i].IsCanMove = false;
+                bearStates[i] = BearState.Arrived;
+            }
+
+            // 非アクティブの熊がいるかをチェック
+            if (bears[i].gameObject.activeSelf == false)
+            {
+                bearStates[i] = BearState.Standby;
+            }
+
+            // スポーンレベルが0のときに活動中の熊がいたら撤退させる
+            if (spawnLevel == 0 && bears[i].gameObject.activeSelf && bearStates[i] != BearState.Return)
+            {
+                bears[i].BearAnimeTimer = 0;
+                bears[i].BearAnimeMode = Bear.BearAnimationMode.Remove;
+                bears[i].IsCanMove = true;
+                bearStates[i] = BearState.Return;
             }
         }
     }

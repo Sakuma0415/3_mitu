@@ -61,6 +61,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a689b30e1f356f44a5c66bba03f138b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bearSprite: {fileID: 1276419320504036811}
+  spawnPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  isArrived: 0
 --- !u!1 &1276419320504036809
 GameObject:
   m_ObjectHideFlags: 0
