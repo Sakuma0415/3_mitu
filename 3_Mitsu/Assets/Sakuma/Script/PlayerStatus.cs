@@ -24,7 +24,8 @@ public class PlayerStatus : MonoBehaviour
     //Private
     //プレイヤーのオブジェクト
     GameObject playerObject;
-
+    [SerializeField]
+    HoneyMaster honeyMaster;
 
 
     private void Start()
@@ -44,6 +45,19 @@ public class PlayerStatus : MonoBehaviour
 
     void Update()
     {
-        
+        if(honeyMaster.IsHitPlayer)
+        {
+            
+            for(int i=0;i<ItemList.Instance.itemList.Length; i++)
+            {
+                if (ItemList.Instance.itemList[i]!=-1) {
+                    if (ItemList.Instance.itemDataList[ItemList.Instance.itemList[i]].itemName == "ハチの巣")
+                    {
+                        ItemList.Instance.ItemLost(i);
+                    }
+                }
+            }
+            playerObject.transform.position = new Vector3(0, 0, 0);
+        }
     }
 }

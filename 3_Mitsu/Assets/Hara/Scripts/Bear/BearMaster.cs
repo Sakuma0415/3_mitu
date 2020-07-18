@@ -10,7 +10,7 @@ public class BearMaster : MonoBehaviour
     [SerializeField, Header("熊の生成上限数"), Range(1, 10)] private int maxBear = 5;
     [SerializeField, Header("熊の移動速度"), Range(1.0f, 5.0f)] private float bearSpeed = 1.0f;
     [SerializeField, Header("熊の基本スポーン間隔"), Range(0f, 20.0f)] private float spawnTime = 10.0f;
-    [SerializeField, Header("熊のスポーンレベル"), Range(0, 5)] private int spawnLevel = 1;
+    [SerializeField, Header("熊のスポーンレベル"), Range(0, 5)] public int spawnLevel = 1;
     [SerializeField, Header("熊が向かう場所(座標)")] private Vector3 bearTargetPos = Vector3.zero;
     [SerializeField, Header("有効範囲"), Range(0f, 5.0f)] private float targetArea = 1.0f;
 

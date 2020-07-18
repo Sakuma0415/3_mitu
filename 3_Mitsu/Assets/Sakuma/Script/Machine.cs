@@ -20,6 +20,10 @@ public class Machine : MonoBehaviour
     Text contText;
     [SerializeField]
     float siftTime =10;
+    [SerializeField]
+    BearMaster bearMaster;
+
+    bool sw = false;
 
     void Start()
     {
@@ -47,6 +51,12 @@ public class Machine : MonoBehaviour
         }
 
 
+        if (sw && Input.GetKeyDown(KeyCode.Space)) 
+        {
+
+            StackH();
+        }
+
         if (Input .GetKeyDown(KeyCode.Q))
         {
             LinePlus();
@@ -56,6 +66,10 @@ public class Machine : MonoBehaviour
         {
             sysGo();
         }
+
+        int bearCont = end / 3;
+
+        bearMaster.spawnLevel = bearCont;
     }
 
     void sysGo()
@@ -113,15 +127,19 @@ public class Machine : MonoBehaviour
         }
     }
 
-
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
         {
-            if(Input .GetKeyDown (KeyCode.Space))
-            {
-                StackH();
-            }
+            sw = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
+        {
+                sw = false;
         }
     }
 
