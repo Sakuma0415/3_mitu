@@ -267,19 +267,6 @@ public class HoneyMaster : MonoBehaviour
     }
 
     /// <summary>
-    /// テスト用の関数
-    /// </summary>
-    /// <returns></returns>
-    private Vector3 MouseToWorld()
-    {
-        Vector3 mouse = Input.mousePosition;
-        Camera main = Camera.main;
-        mouse.z = 10;
-        Vector3 pos = main.ScreenToWorldPoint(mouse);
-        return pos;
-    }
-
-    /// <summary>
     /// プレイヤーの座標情報を渡す
     /// </summary>
     private void PlayerGPS()
@@ -292,15 +279,11 @@ public class HoneyMaster : MonoBehaviour
                 {
                     if (beeControl[i].Chase && playerInHub == false)
                     {
-                        Vector3 movePos;
+                        Vector3 movePos = Vector3.zero;
                         // 追跡状態のときはプレイヤーの座標に向かってくる
                         if (status != null)
                         {
                             movePos = status.PlayerTransform.position;
-                        }
-                        else
-                        {
-                            movePos = MouseToWorld();
                         }
                         beeControl[i].MasterControl = false;
                         fixPosition[i] = false;

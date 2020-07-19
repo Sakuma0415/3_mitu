@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1276419320470855400}
   - component: {fileID: 1276419320470855407}
   - component: {fileID: 1276419320470855406}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   bearSprite: {fileID: 1276419320504036811}
   spawnPos: {x: 0, y: 0, z: 0}
   targetPos: {x: 0, y: 0, z: 0}
-  isArrived: 0
+  isCanMove: 0
 --- !u!1 &1276419320504036809
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1276419320504036810}
   - component: {fileID: 1276419320504036811}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: bear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
