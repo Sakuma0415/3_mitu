@@ -34,6 +34,12 @@ public class Bear : MonoBehaviour
 
     private float animeDuration = 2.0f;
 
+    public bool IsDeath { set; private get; } = false;
+
+    public bool IsEnd { private set; get; } = false;
+
+    private Coroutine coroutine = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +74,8 @@ public class Bear : MonoBehaviour
         bearAnimeTimer = 0;
         bearAnimeMode = BearAnimationMode.Spawn;
         isCanMove = true;
+        IsDeath = false;
+        IsEnd = false;
     }
 
     /// <summary>
@@ -75,7 +83,7 @@ public class Bear : MonoBehaviour
     /// </summary>
     private void BearMove()
     {
-        
+        if (IsDeath) { return; }
 
         // 移動する処理
         if (isCanMove == true)
@@ -104,7 +112,7 @@ public class Bear : MonoBehaviour
                     else
                     {
                         bearSprite.color = new Color(bearSprite.color.r, bearSprite.color.g, bearSprite.color.b, 0f);
-                        gameObject.SetActive(false);
+                        IsEnd = true;
                     }
 
                     targetPos = spawnPos;
@@ -130,5 +138,61 @@ public class Bear : MonoBehaviour
             }
             transform.position = Vector2.MoveTowards(now, target, BearSpeed * Time.deltaTime);
         }
+    }
+
+    /// <summary>
+    /// 銃に当たった時のアニメーション処理
+    /// </summary>
+    public void DeathAnimation()
+    {
+        if(coroutine == null)
+        {
+            coroutine = StartCoroutine(DeathCoroutine());
+        }
+    }
+
+    /// <summary>
+    /// アニメーションのコルーチン
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DeathCoroutine()
+    {
+        if(bearSprite != null)
+        {
+            float animationTimer = 0;
+            float spanTimer = 0;
+            float duration = 2.0f;
+            float span = 0.1f;
+
+            // 最初は透明度を1にしておく
+            Color bearColor = new Color(bearSprite.color.r, bearSprite.color.g, bearSprite.color.b, 1.0f);
+            bearSprite.color = bearColor;
+
+            while(animationTimer < duration)
+            {
+                if(spanTimer < span)
+                {
+                    spanTimer += Time.deltaTime;
+                }
+                else
+                {
+                    spanTimer = 0;
+
+                    bearSprite.enabled = !bearSprite.enabled;
+                }
+                float rate = animationTimer / duration;
+                bearColor.a = Mathf.Max(0, 1.0f - rate);
+                bearSprite.color = bearColor;
+                animationTimer += Time.deltaTime;
+                yield return null;
+            }
+            bearColor.a = 0;
+            bearSprite.color = bearColor;
+            bearSprite.enabled = true;
+        }
+
+        // コルーチンの終了
+        IsEnd = true;
+        coroutine = null;
     }
 }

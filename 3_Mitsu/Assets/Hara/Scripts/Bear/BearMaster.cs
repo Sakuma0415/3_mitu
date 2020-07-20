@@ -5,6 +5,7 @@ using UnityEngine;
 public class BearMaster : MonoBehaviour
 {
     [SerializeField, Tooltip("熊のPrefab")] private Bear bearPrefab = null;
+    [SerializeField, Tooltip("銃のオブジェクト")] private Gun gun = null;
     private Bear[] bears = null;
     
     private enum BearState
@@ -12,9 +13,10 @@ public class BearMaster : MonoBehaviour
         Standby,
         Start,
         Arrived,
-        Return
+        Return,
+        Death
     }
-    [SerializeField] private BearState[] bearStates = null;
+    private BearState[] bearStates = null;
 
     [SerializeField, Header("熊の生成上限数"), Range(1, 10)] private int maxBear = 5;
     [SerializeField, Header("熊の移動速度"), Range(1.0f, 5.0f)] private float bearSpeed = 1.0f;
@@ -123,6 +125,10 @@ public class BearMaster : MonoBehaviour
             bears[count].BearInit();
             bears[count].gameObject.SetActive(true);
         }
+        else
+        {
+            timer = 0;
+        }
     }
 
     /// <summary>
@@ -147,13 +153,49 @@ public class BearMaster : MonoBehaviour
             }
 
             // スポーンレベルが0のときに活動中の熊がいたら撤退させる
-            if (spawnLevel == 0 && bears[i].gameObject.activeSelf && bearStates[i] != BearState.Return)
+            if (spawnLevel == 0 && bears[i].gameObject.activeSelf && (bearStates[i] == BearState.Start || bearStates[i] == BearState.Arrived))
             {
                 bears[i].BearAnimeTimer = 0;
                 bears[i].BearAnimeMode = Bear.BearAnimationMode.Remove;
                 bears[i].IsCanMove = true;
                 bearStates[i] = BearState.Return;
             }
+
+            // 銃に当たった熊を検知し、撃退処理を実行させる
+            if (gun != null && gun.HitObject != null)
+            {
+                if (gun.HitObject == bears[i].gameObject && (bearStates[i] == BearState.Start || bearStates[i] == BearState.Arrived))
+                {
+                    bearStates[i] = BearState.Death;
+                    bears[i].IsDeath = true;
+                    bears[i].DeathAnimation();
+                    gun.ResetHitObject();
+                }
+            }
+
+            // Endフラグを検知したら熊を退去(非表示)させる
+            if(bears[i].IsEnd)
+            {
+                bearStates[i] = BearState.Standby;
+                bears[i].gameObject.SetActive(false);
+            }
         }
+    }
+
+    /// <summary>
+    /// 拠点に到達している熊の数を取得
+    /// </summary>
+    /// <returns></returns>
+    public int ArrivedCount()
+    {
+        int count = 0;
+        foreach(var state in bearStates)
+        {
+            if(state == BearState.Arrived)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 }

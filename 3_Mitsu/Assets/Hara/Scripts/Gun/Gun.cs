@@ -10,7 +10,9 @@ public class Gun : MonoBehaviour
     [SerializeField, Header("残弾数")] private int bullet = 10;
     public int Bullet { set { bullet = value; } get { return bullet; } }
 
-    private bool isCanUseGun = true;
+    public bool IsCanUseGun { set; private get; } = true;
+
+    private bool isHoldInHand = false;
 
     private bool activeFlag = true;
 
@@ -22,23 +24,26 @@ public class Gun : MonoBehaviour
     void Start()
     {
         targetSprite = GetComponent<SpriteRenderer>();
+        isHoldInHand = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        bool isPlay;
         try
         {
-            isCanUseGun = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+            isPlay = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
         }
         catch
         {
-            isCanUseGun = true;
+            isPlay = true;
         }
 
-        if(isCanUseGun)
+        if(IsCanUseGun && isPlay)
         {
-            if (Input.GetKeyDown(KeyCode.E)) { activeFlag = !activeFlag; }
+            if (Input.GetKeyDown(KeyCode.E)) { isHoldInHand = !isHoldInHand; }
+            activeFlag = isHoldInHand;
         }
         else
         {
