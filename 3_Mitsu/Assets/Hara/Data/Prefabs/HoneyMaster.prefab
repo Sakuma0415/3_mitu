@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5704098697665418455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5704098697665418453}
+  - component: {fileID: 5704098697665418452}
+  m_Layer: 0
+  m_Name: HoneyMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5704098697665418453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704098697665418455}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5704098697665418452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704098697665418455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a91dba2f248564b819fba50f701546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  honeyCombPrefab: {fileID: 597947585432896067, guid: 9b3cab59cfae5ef4788c9d58ef62dc22,
+    type: 3}
+  dropPrefab: {fileID: 2042941850538027693, guid: 36af75a639c51384cbcca45e7664ac30,
+    type: 3}
+  beePrefab: {fileID: 5764740256048564410, guid: 32fec6f17500607428d5d90530b66766,
+    type: 3}
+  createPos: []
+  maxHoneyComb: 3
+  maxBee: 5
+  speed: 1
+  maxMoveArea: 10
+  status: {fileID: 0}
+  hubPos: {x: 0, y: 0, z: 0}
+  hubArea: 2.5
+  maxDrop: 10

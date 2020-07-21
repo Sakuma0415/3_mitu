@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Matsushita/Scenes/TitleScene.unity
+    guid: 0dc22db951733c34fb80714b11e81b33
+  - enabled: 1
+    path: Assets/Sakuma/Scenes/Action.unity
+    guid: c653f74d9b93d324d8ba74a2a9e4f336
+  - enabled: 1
+    path: Assets/Matsushita/Scenes/ResultScene.unity
+    guid: 090074fca8c4e794a8779922b2a119f6
   m_configObjects: {}
