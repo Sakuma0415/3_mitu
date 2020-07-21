@@ -30,7 +30,10 @@ public class Menu : MonoBehaviour
             }
             else
             {
-                StartCoroutine("FadeIn");
+                if (GameStatus.Instance.gameMode == GameStatus.GameMode.Play)
+                {
+                    StartCoroutine("FadeIn");
+                }
             }
         }
     }

@@ -376,8 +376,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1614147489}
-  - {fileID: 1501754425}
   - {fileID: 2060564218}
+  - {fileID: 1501754425}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -902,7 +902,7 @@ PrefabInstance:
     - target: {fileID: 5704098697665418452, guid: d6600cd728d49a540a4815626cb44382,
         type: 3}
       propertyPath: maxBee
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5704098697665418452, guid: d6600cd728d49a540a4815626cb44382,
         type: 3}
@@ -5112,7 +5112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 3131985616674400340, guid: eb7a52d1e25c35947afbfb9d78836d03,
     type: 3}
-  spead: 3.5
+  spead: 4
   down: 1.5
   speadmaximumTime: 0.2
   PlayerTransform: {fileID: 0}
@@ -5427,7 +5427,7 @@ RectTransform:
   m_Children:
   - {fileID: 319015962}
   m_Father: {fileID: 63942586}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7614,7 +7614,7 @@ RectTransform:
   - {fileID: 543083459}
   - {fileID: 445082917}
   m_Father: {fileID: 63942586}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}

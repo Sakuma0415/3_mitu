@@ -15,7 +15,7 @@ public class StartButton : MonoBehaviour
         Startbutton.onClick.AddListener(() =>
         {
             //シーンの名前を変えよう。
-            //SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene("Action");
 
             Debug.Log("ボタンが押された");
         });

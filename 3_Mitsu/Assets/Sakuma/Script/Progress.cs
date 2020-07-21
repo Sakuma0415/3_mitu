@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 ///ゲームの進行度を管理するクラス
@@ -19,5 +20,13 @@ public class Progress : MonoBehaviour
         Instance = new Progress();
         Instance.Degree = 0;
     }
-    
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.LoadScene("ResultScene");
+        }
+    }
+
 }

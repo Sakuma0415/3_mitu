@@ -15,7 +15,7 @@ public class Result : MonoBehaviour
         resultButton.onClick.AddListener(() =>
         {
             //シーンの名前を変えよう。
-            //SceneManager.LoadScene("TitleScene");
+            SceneManager.LoadScene("TitleScene");
 
             Debug.Log("リザルトのボタンが押された");
         });
