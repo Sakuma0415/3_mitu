@@ -71,7 +71,7 @@ public class PlayerMove : MonoBehaviour
             speadTime = (speadTime - Time.fixedDeltaTime / playerStatus.speadmaximumTime) < 0 ? 0 : speadTime - Time.fixedDeltaTime / playerStatus.speadmaximumTime;
         }
 
-        spead = Mathf.Lerp(0, playerStatus.spead, speadTime);
+        spead = Mathf.Lerp(0, playerStatus.spead-(playerStatus.down *((float )ItemList .Instance .itemCont / (float)ItemList.Instance.itemList.Length)), speadTime);
 
         playerAnime.IsWalk = (spead > 0);
 

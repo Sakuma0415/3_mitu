@@ -23,7 +23,10 @@ public class PlayerAnime : MonoBehaviour
     {
         if (IsWalk)
         {
-            walkTime += Time.deltaTime;
+            if(GameStatus .Instance .gameMode ==GameStatus.GameMode.Play)
+            {
+                walkTime += Time.deltaTime;
+            }
             material.SetTexture("_MainTex", sprites[((int)(walkTime/ stepTime)%2)+1]);
         }
         else

@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class BeeControl : MonoBehaviour
 {
-    [SerializeField, Tooltip("移動速度"), Range(1, 5)] private float speed = 1.0f;
+    /// <summary>
+    /// 蜂の移動速度
+    /// </summary>
+    public float Speed { set; private get; } = 1.0f;
+
     private Vector3 nowPos = Vector3.zero;
 
     private Coroutine coroutine = null;
@@ -21,6 +26,11 @@ public class BeeControl : MonoBehaviour
     private bool moveFlag = false;
 
     public bool Chase { private set; get; } = false;
+
+    /// <summary>
+    /// マスター側で制御するためのフラグ
+    /// </summary>
+    public bool MasterControl { set; private get; } = false;
 
     // Update is called once per frame
     void Update()
@@ -55,7 +65,17 @@ public class BeeControl : MonoBehaviour
     /// </summary>
     private void BeeMove()
     {
-        if(moveFlag == false) { return; }
+        bool activate;
+        try
+        {
+            activate = GameStatus.Instance.gameMode == GameStatus.GameMode.Play;
+        }
+        catch
+        {
+            activate = true;
+        }
+
+        if(moveFlag == false || activate == false) { return; }
 
         // 現在の位置情報を更新
         nowPos = new Vector3(transform.position.x, transform.position.y, 0);
@@ -80,7 +100,7 @@ public class BeeControl : MonoBehaviour
         }
 
         // 移動処理
-        transform.position = Vector3.MoveTowards(nowPos, target, (Chase ? speed : speed * 0.5f) * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(nowPos, target, (Chase && MasterControl == false ? Speed : Speed * 0.5f) * Time.deltaTime);
     }
 
     /// <summary>
@@ -90,7 +110,6 @@ public class BeeControl : MonoBehaviour
     {
         if(beeHit != null)
         {
-            if (Chase == false || moveFlag == false) { beeHit.PlayerHit = false; }
             HitFlag = Chase && moveFlag && beeHit.PlayerHit;
         }
         else
@@ -159,7 +178,7 @@ public class BeeControl : MonoBehaviour
     /// 蜂の視界内に入ったら追跡を開始
     /// </summary>
     /// <param name="collision"></param>
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         Chase = true;
     }

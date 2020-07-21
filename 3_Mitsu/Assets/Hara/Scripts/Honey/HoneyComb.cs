@@ -42,6 +42,19 @@ public class HoneyComb : MonoBehaviour
     /// </summary>
     public void GetHoney()
     {
+        bool isItemFull;
+        try
+        {
+            isItemFull = ItemList.Instance.noSpace;
+        }
+        catch
+        {
+            isItemFull = false;
+        }
+
+        // アイテムが満帆なら処理を終了
+        if (isItemFull) { return; }
+
         // 蜂の巣を非表示にする
         gameObject.SetActive(false);
 
@@ -49,7 +62,7 @@ public class HoneyComb : MonoBehaviour
         SpawnFlag = true;
 
         // プレイヤー側にデータを渡す
-
+        ItemList.Instance.ItemGet("ハチの巣");
     }
 
     /// <summary>
