@@ -8,8 +8,8 @@ public class ItemShopButton : MonoBehaviour
     [SerializeField, Tooltip("商品名のテキスト")] private Text itemNameText = null;
     [SerializeField, Tooltip("商品画像")] private Image itemImage = null;
     [SerializeField, Tooltip("商品の値段テキスト")] private Text itemPriceText = null;
-    public Text ItemPriceText { get { return itemPriceText; } }
-    public Button ShopButton { private set; get; } = null;
+    private Button button = null;
+    private int price = 0;
 
     /// <summary>
     /// ショップの購入ボタンを設定する
@@ -32,6 +32,8 @@ public class ItemShopButton : MonoBehaviour
             itemImage.sprite = itemSprite;
         }
 
+        price = itemPrice;
+
         if(itemPriceText != null)
         {
             // 値段をセット
@@ -41,12 +43,30 @@ public class ItemShopButton : MonoBehaviour
             }
             else
             {
-                itemPriceText.text = itemPrice.ToString() + " 円";
+                itemPriceText.text = price.ToString() + " 円";
             }
         }
 
         // 購入処理をセット
-        ShopButton = GetComponent<Button>();
-        ShopButton.onClick.AddListener(buttonAction);
+        button = GetComponent<Button>();
+        button.onClick.AddListener(buttonAction);
+    }
+
+    /// <summary>
+    /// 購入ボタンの状態を設定
+    /// </summary>
+    /// <param name="active"></param>
+    public void SetButtonActive(bool active)
+    {
+        if (active)
+        {
+            button.interactable = true;
+            itemPriceText.text = price.ToString() + " 円";
+        }
+        else
+        {
+            button.interactable = false;
+            itemPriceText.text = "売り切れ";
+        }
     }
 }
