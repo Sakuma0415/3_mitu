@@ -14,6 +14,9 @@ public class ItemShop : MonoBehaviour
 
     [SerializeField, Header("販売商品リスト")] private ItemData[] itemDatas = null;
 
+    // 製造機のラインを追加するための処理を呼び出すのでスクリプトを取得しておく
+    [SerializeField, Tooltip("製造機スクリプト")] private Machine machine = null;
+
     // 購入個数制限を管理する変数
     private bool[] buyInfinityFlag = null;
     private int[] buyLimit = null;
@@ -179,8 +182,16 @@ public class ItemShop : MonoBehaviour
             }
         }
 
-        // アイテムをインベントリに追加する処理
-        ItemList.Instance.ItemGet(itemName);
+        if(itemName == "強化パーツ")
+        {
+            // 強化パーツを購入した時のみインベントリ追加ではなく、製造機のラインを追加する処理を実行
+            machine.LinePlus();
+        }
+        else
+        {
+            // アイテムをインベントリに追加する処理
+            ItemList.Instance.ItemGet(itemName);
+        }
     }
 
     /// <summary>
