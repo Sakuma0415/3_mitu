@@ -18,6 +18,8 @@ public class ItemList : MonoBehaviour
 
     public int okane = 0;
 
+    public bool shoes = false;
+
     public Transform playerPos;
     [SerializeField]
     HoneyMaster honeyMaster;
@@ -58,6 +60,13 @@ public class ItemList : MonoBehaviour
             if (itemList[i] == -1)
             {
                 itemList[i] = itemNum;
+
+                switch (name)
+                {
+                    case "俊足シューズ":
+                        shoes = true;
+                        break ;
+                }
                 return;
             }
 
@@ -69,12 +78,18 @@ public class ItemList : MonoBehaviour
 
     public void ItemLost(int num)
     {
-        if(itemDataList[itemList[num]].itemName == "ハチの巣")
+
+        switch (itemDataList[itemList[num]].itemName)
         {
-            angle += 60;
-            Vector3[] lists = new Vector3[1];
-            lists[0] = playerPos.position + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), -0.1f)*1.3f;
-            honeyMaster.DropHoneyComb(lists);
+            case "ハチの巣":
+                angle += 60;
+                Vector3[] lists = new Vector3[1];
+                lists[0] = playerPos.position + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), -0.1f) * 1.3f;
+                honeyMaster.DropHoneyComb(lists);
+                break ;
+            case "俊足シューズ":
+                shoes = false;
+                break ;
         }
         itemList[num] = -1;
 
@@ -82,7 +97,6 @@ public class ItemList : MonoBehaviour
 
     private void Update()
     {
-        
         int cont = 0;
         for (int i = 0; i < Instance.itemList.Length; i++)
         {

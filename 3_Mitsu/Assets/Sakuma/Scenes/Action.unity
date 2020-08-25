@@ -576,6 +576,7 @@ MonoBehaviour:
   itemCont: 0
   noSpace: 0
   okane: 0
+  shoes: 0
   playerPos: {fileID: 0}
   honeyMaster: {fileID: 43452591}
 --- !u!4 &129867871
@@ -5112,6 +5113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 3131985616674400340, guid: eb7a52d1e25c35947afbfb9d78836d03,
     type: 3}
+  BaseSpead: 4
   spead: 4
   down: 1.5
   speadmaximumTime: 0.2

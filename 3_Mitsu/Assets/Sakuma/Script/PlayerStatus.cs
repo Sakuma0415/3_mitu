@@ -13,6 +13,8 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField]
     GameObject playerPrefab;
     //プレイヤーの移動速度
+    public float BaseSpead = 0;
+    //プレイヤーの移動速度
     public float spead=0;
     //プレイヤーの移動速度の減少亮
     public float down = 0;
@@ -45,7 +47,8 @@ public class PlayerStatus : MonoBehaviour
 
     void Update()
     {
-        if(honeyMaster.IsHitPlayer)
+        spead = (ItemList.Instance.shoes) ? BaseSpead*1.5f : BaseSpead; 
+        if (honeyMaster.IsHitPlayer)
         {
             
             for(int i=0;i<ItemList.Instance.itemList.Length; i++)
