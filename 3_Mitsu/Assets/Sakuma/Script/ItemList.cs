@@ -95,8 +95,35 @@ public class ItemList : MonoBehaviour
 
     }
 
+    public void ListPlus()
+    {
+        if(itemList.Length < 10)
+        {
+            int[] nextList = new int[10];
+            for(int i=0;i< nextList.Length; i++)
+            {
+                if(i< itemList.Length)
+                {
+                    nextList[i] = itemList[i];
+                }
+                else
+                {
+                    nextList[i] = -1;
+                }
+            }
+            
+            itemList = nextList;
+        }
+    }
+
     private void Update()
     {
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            ListPlus();
+        }
+
         int cont = 0;
         for (int i = 0; i < Instance.itemList.Length; i++)
         {
