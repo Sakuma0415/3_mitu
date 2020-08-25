@@ -182,15 +182,20 @@ public class ItemShop : MonoBehaviour
             }
         }
 
-        if(itemName == "強化パーツ")
+        switch (itemName)
         {
-            // 強化パーツを購入した時のみインベントリ追加ではなく、製造機のラインを追加する処理を実行
-            machine.LinePlus();
-        }
-        else
-        {
-            // アイテムをインベントリに追加する処理
-            ItemList.Instance.ItemGet(itemName);
+            case "強化パーツ":
+                // 強化パーツを購入した時は製造機のラインを追加する処理を実行
+                machine.LinePlus();
+                break;
+            case "収納の心得":
+                // 収納の心得を購入した時はインベントリの枠を追加
+                ItemList.Instance.ListPlus();
+                break;
+            default:
+                // アイテムをインベントリに追加する処理
+                ItemList.Instance.ItemGet(itemName);
+                break;
         }
     }
 
