@@ -14,6 +14,13 @@ public class ItemShop : MonoBehaviour
 
     [SerializeField, Header("販売商品リスト")] private ItemData[] itemDatas = null;
 
+    // 製造機のラインを追加するための処理を呼び出すのでスクリプトを取得しておく
+    [SerializeField, Tooltip("製造機スクリプト")] private Machine machine = null;
+
+    // 購入個数制限を管理する変数
+    private bool[] buyInfinityFlag = null;
+    private int[] buyLimit = null;
+
     // 所持金の情報を扱う変数
     private int money = 0;
 
@@ -41,6 +48,10 @@ public class ItemShop : MonoBehaviour
         // 戻るボタンに処理を割り当てる
         exitButton.onClick.AddListener(() => CloseShop());
 
+        // 配列の初期化
+        buyInfinityFlag = new bool[itemDatas.Length];
+        buyLimit = new int[itemDatas.Length];
+
         // ショップボタンを取得する
         if(itemList != null)
         {
@@ -62,10 +73,25 @@ public class ItemShop : MonoBehaviour
                     Sprite itemSprite = itemDatas[num].itemSprite;
                     int itemPrice = itemDatas[num].price;
                     if(itemPrice < 0) { itemPrice = 0; }
-                    bool infinity = itemDatas[num].Infinity;
+
+                    // 購入制限を設定
+                    buyInfinityFlag[num] = itemDatas[num].Infinity;
+                    if (buyInfinityFlag[num])
+                    {
+                        buyLimit[num] = 0;
+                    }
+                    else
+                    {
+                        buyLimit[num] = itemDatas[num].Limit;
+                    }
 
                     // ボタン処理を実装する
-                    shopButton[num].SetButtonAction(itemName, itemSprite, itemPrice, () => ItemBuy(itemName, itemPrice, infinity, shopButton[num]));
+                    shopButton[num].SetButtonAction(itemName, itemSprite, itemPrice, () => ItemBuy(num, itemName, itemPrice, shopButton[num]));
+
+                    if(buyInfinityFlag[num] == false && buyLimit[num] < 1)
+                    {
+                        shopButton[num].SetButtonActive(false);
+                    }
                 }
             }
         }
@@ -134,24 +160,43 @@ public class ItemShop : MonoBehaviour
     /// <summary>
     /// 購入処理
     /// </summary>
+    /// <param name="itemID">商品番号</param>
     /// <param name="itemName">商品名</param>
     /// <param name="price">値段</param>
-    /// <param name="infinityBuy">無制限に購入できる</param>
     /// <param name="shopButton">制御するボタン</param>
-    public void ItemBuy(string itemName, int price, bool infinityBuy, ItemShopButton shopButton)
+    public void ItemBuy(int itemID, string itemName, int price, ItemShopButton shopButton)
     {
         // 所持金チェック
         if(Pay(price) == false || ItemList.Instance.noSpace) { return; }
         
-        if (infinityBuy == false)
+        // 購入制限がある場合の購入処理
+        if(buyInfinityFlag[itemID] == false)
         {
-            // 一度購入したらボタンを押せないようにする
-            shopButton.ShopButton.interactable = false;
-            shopButton.ItemPriceText.text = "売り切れ";
+            // 在庫を減らす
+            buyLimit[itemID]--;
+            
+            // 在庫が0になったら購入不可にする
+            if(buyLimit[itemID] < 1)
+            {
+                shopButton.SetButtonActive(false);
+            }
         }
 
-        // アイテムをインベントリに追加する処理
-        ItemList.Instance.ItemGet(itemName);
+        switch (itemName)
+        {
+            case "強化パーツ":
+                // 強化パーツを購入した時は製造機のラインを追加する処理を実行
+                machine.LinePlus();
+                break;
+            case "収納の心得":
+                // 収納の心得を購入した時はインベントリの枠を追加
+                ItemList.Instance.ListPlus();
+                break;
+            default:
+                // アイテムをインベントリに追加する処理
+                ItemList.Instance.ItemGet(itemName);
+                break;
+        }
     }
 
     /// <summary>

@@ -100,8 +100,7 @@ public class Bear : MonoBehaviour
                     else
                     {
                         bearSprite.color = new Color(bearSprite.color.r, bearSprite.color.g, bearSprite.color.b, 1.0f);
-                    }
-                    
+                    } 
                 }
                 else
                 {

@@ -16,4 +16,6 @@ public class ItemData : ScriptableObject
     public int price;
     // 無限に購入できる
     public bool Infinity;
+    // 購入制限数
+    public int Limit;
 }

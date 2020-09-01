@@ -152,15 +152,6 @@ public class BearMaster : MonoBehaviour
                 bearStates[i] = BearState.Standby;
             }
 
-            // スポーンレベルが0のときに活動中の熊がいたら撤退させる
-            if (spawnLevel == 0 && bears[i].gameObject.activeSelf && (bearStates[i] == BearState.Start || bearStates[i] == BearState.Arrived))
-            {
-                bears[i].BearAnimeTimer = 0;
-                bears[i].BearAnimeMode = Bear.BearAnimationMode.Remove;
-                bears[i].IsCanMove = true;
-                bearStates[i] = BearState.Return;
-            }
-
             // 銃に当たった熊を検知し、撃退処理を実行させる
             if (gun != null && gun.HitObject != null)
             {
