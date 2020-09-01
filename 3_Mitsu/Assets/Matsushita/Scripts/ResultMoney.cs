@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class ResultMoney : MonoBehaviour
 {
+    public ItemList itemList;
     private Text earnMoneyText;
     private int firstscore = 0;
-    private int gameScore = 100;
+    private int gameScore;
     // Start is called before the first frame update
     void Start()
     {
         earnMoneyText.text = firstscore.ToString();
+        itemList = GetComponent<ItemList>();
+        gameScore = itemList.okane;
     }
 
     // Update is called once per frame
@@ -24,7 +27,7 @@ public class ResultMoney : MonoBehaviour
     {
         if(firstscore<gameScore)
         {
-            firstscore += 1;
+            firstscore += 100;
             earnMoneyText.text = firstscore.ToString();
         }
     }
