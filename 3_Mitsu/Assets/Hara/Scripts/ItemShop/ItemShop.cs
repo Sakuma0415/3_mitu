@@ -17,6 +17,9 @@ public class ItemShop : MonoBehaviour
     // 製造機のラインを追加するための処理を呼び出すのでスクリプトを取得しておく
     [SerializeField, Tooltip("製造機スクリプト")] private Machine machine = null;
 
+    // 猟銃の管理スクリプト
+    [SerializeField, Tooltip("猟銃スクリプト")] private Gun gun = null;
+
     // 購入個数制限を管理する変数
     private bool[] buyInfinityFlag = null;
     private int[] buyLimit = null;
@@ -191,6 +194,9 @@ public class ItemShop : MonoBehaviour
             case "収納の心得":
                 // 収納の心得を購入した時はインベントリの枠を追加
                 ItemList.Instance.ListPlus();
+                break;
+            case "猟銃":
+                gun.IsCanUseGun = true;
                 break;
             default:
                 // アイテムをインベントリに追加する処理

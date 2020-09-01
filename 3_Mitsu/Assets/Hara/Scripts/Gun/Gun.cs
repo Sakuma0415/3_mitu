@@ -7,12 +7,10 @@ public class Gun : MonoBehaviour
     [SerializeField, Tooltip("弾が当たるレイヤー")] private LayerMask targetLayer;
     private SpriteRenderer targetSprite = null;
 
-    [SerializeField, Header("残弾数")] private int bullet = 10;
-    public int Bullet { set { bullet = value; } get { return bullet; } }
-
-    public bool IsCanUseGun { set; private get; } = true;
-
-    private bool isHoldInHand = false;
+    /// <summary>
+    /// 銃の使用許可フラグ
+    /// </summary>
+    public bool IsCanUseGun { set; private get; } = false;
 
     private bool activeFlag = true;
 
@@ -24,7 +22,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         targetSprite = GetComponent<SpriteRenderer>();
-        isHoldInHand = false;
+        IsCanUseGun = false;
     }
 
     // Update is called once per frame
@@ -42,8 +40,7 @@ public class Gun : MonoBehaviour
 
         if(IsCanUseGun && isPlay)
         {
-            if (Input.GetKeyDown(KeyCode.E)) { isHoldInHand = !isHoldInHand; }
-            activeFlag = isHoldInHand;
+            activeFlag = true;
         }
         else
         {
@@ -79,8 +76,6 @@ public class Gun : MonoBehaviour
     /// </summary>
     private void SetTarget()
     {
-        bullet = Mathf.Max(0, bullet);
-
         if (activeFlag)
         {
             // マウスカーソルの設定
@@ -93,7 +88,7 @@ public class Gun : MonoBehaviour
             transform.position = MouseToWorld();
 
             // 弾丸を発射
-            if (Input.GetMouseButtonDown(0) && bullet > 0)
+            if (Input.GetMouseButtonDown(0))
             {
                 Ray bulletRay = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit2D = Physics2D.Raycast(bulletRay.origin, bulletRay.direction, 200, targetLayer);
@@ -106,8 +101,6 @@ public class Gun : MonoBehaviour
                 {
                     ResetHitObject();
                 }
-
-                bullet--;
             }
         }
         else
