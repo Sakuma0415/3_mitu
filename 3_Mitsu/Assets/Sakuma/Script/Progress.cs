@@ -29,9 +29,11 @@ public class Progress : MonoBehaviour
 
     private void Update()
     {
+        if (GameStatus.Instance.gameMode == GameStatus.GameMode.Play|| GameStatus.Instance.gameMode == GameStatus.GameMode.Stop)
+        {
+            Instance.LimitTime -= Time.deltaTime;
 
-        Instance.LimitTime -= Time.deltaTime;
-
+        }
         if (Instance.LimitTime < 0 && endC == false)
         {
             endC = true;

@@ -22,7 +22,6 @@ public class Machine : MonoBehaviour
     float siftTime =10;
     [SerializeField]
     BearMaster bearMaster;
-
     bool sw = false;
 
     void Start()
@@ -59,7 +58,7 @@ public class Machine : MonoBehaviour
 
         if (Input .GetKeyDown(KeyCode.Q))
         {
-            LinePlus();
+            //LinePlus();
         }
 
         if (GameStatus.Instance.gameMode == GameStatus .GameMode .Play )
@@ -78,7 +77,17 @@ public class Machine : MonoBehaviour
         {
             if (IsLine[j])
             {
-                lineTime[j] += Time.deltaTime;
+                float lifeTime = 0;
+                if(bearMaster.ArrivedCount() == 0)
+                {
+                    lifeTime = Time.deltaTime;
+                }
+                else
+                {
+                    lifeTime = Time.deltaTime/(bearMaster.ArrivedCount()+1);
+                }
+
+                lineTime[j] += lifeTime;
             }
 
             if(lineTime[j]> siftTime)
