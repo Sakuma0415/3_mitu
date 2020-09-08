@@ -18,13 +18,18 @@ public class Progress : MonoBehaviour
 
     bool endC = false;
 
+    [SerializeField]
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip sound1;
+
     //アクションシーン開始時の進行度の初期化
     private void Awake()
     {
         endC = false;
         Instance = new Progress();
         Instance.Degree = 0;
-        Instance .LimitTime = 180;
+        Instance .LimitTime = 18;
     }
 
     private void Update()
@@ -34,8 +39,11 @@ public class Progress : MonoBehaviour
             Instance.LimitTime -= Time.deltaTime;
 
         }
-        if (Instance.LimitTime < 0 && endC == false)
+        if (Instance.LimitTime < 1 && endC == false)
         {
+            audioSource.Stop();
+            audioSource.PlayOneShot(sound1);
+            
             endC = true;
             GameStatus.Instance.ChangeGameMode(GameStatus.GameMode.Stop);
         }
