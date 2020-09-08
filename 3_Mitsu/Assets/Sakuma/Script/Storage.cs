@@ -18,7 +18,7 @@ public class Storage : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)&&sw)
         {
 
-            ItemList.Instance.okane += machine.end * 1000;
+            ItemList.Instance.okane += machine.end * 1500+(machine.end* machine.end*100);
             machine.end = 0;
 
         }

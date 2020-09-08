@@ -6,7 +6,9 @@ public class BearMaster : MonoBehaviour
 {
     [SerializeField, Tooltip("熊のPrefab")] private Bear bearPrefab = null;
     [SerializeField, Tooltip("銃のオブジェクト")] private Gun gun = null;
+    private BearUI bearUI = null;
     private Bear[] bears = null;
+    private bool uiFlag = false;
     
     private enum BearState
     {
@@ -37,6 +39,7 @@ public class BearMaster : MonoBehaviour
     void Update()
     {
         CheckBearState();
+        LevelCheck();
         SpawnBear();
     }
 
@@ -46,6 +49,8 @@ public class BearMaster : MonoBehaviour
     private void BearMasterInit()
     {
         CreateBear();
+        bearUI = GetComponent<BearUI>();
+        bearUI.Init();
     }
 
     /// <summary>
@@ -188,5 +193,24 @@ public class BearMaster : MonoBehaviour
             }
         }
         return count;
+    }
+
+    /// <summary>
+    /// スポーンレベルをチェックしてUIの表示を行う
+    /// </summary>
+    private void LevelCheck()
+    {
+        if(bearUI == null) { return; }
+
+        if(spawnLevel > 0 && uiFlag == false)
+        {
+            uiFlag = true;
+            bearUI.BearUIAction();
+        }
+
+        if(spawnLevel < 1 && uiFlag)
+        {
+            uiFlag = false;
+        }
     }
 }
