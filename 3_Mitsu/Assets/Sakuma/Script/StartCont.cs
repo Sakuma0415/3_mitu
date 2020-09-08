@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class StartCont : MonoBehaviour
 {
 
-    float time = 3;
+    float time = 4;
     [SerializeField]
     Text text;
     [SerializeField]
@@ -15,7 +15,7 @@ public class StartCont : MonoBehaviour
     AudioClip sound1;
     private void Start()
     {
-        tet = "4";
+        tet = "";
     }
 
     // Update is called once per frame
@@ -25,7 +25,10 @@ public class StartCont : MonoBehaviour
 
 
         time -= Time.deltaTime;
-        if (time > 2)
+        if (time > 3)
+        {
+            text.text = "";
+        }else if (time > 2)
         {
             text.text = "3";
         }else if (time > 1)

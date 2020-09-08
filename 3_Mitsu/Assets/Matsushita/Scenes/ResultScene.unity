@@ -584,6 +584,7 @@ GameObject:
   - component: {fileID: 1743542597}
   - component: {fileID: 1743542599}
   - component: {fileID: 1743542598}
+  - component: {fileID: 1743542600}
   m_Layer: 5
   m_Name: EarnMoneyText
   m_TagString: Untagged
@@ -630,18 +631,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_FontSize: 64
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 86
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 0
 --- !u!222 &1743542599
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -650,6 +651,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1743542596}
   m_CullTransparentMesh: 0
+--- !u!114 &1743542600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743542596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2713d436376ac4ca20f53ab83ac3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1743542598}
 --- !u!1 &2023506299
 GameObject:
   m_ObjectHideFlags: 0
