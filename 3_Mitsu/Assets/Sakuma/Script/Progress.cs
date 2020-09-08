@@ -29,7 +29,7 @@ public class Progress : MonoBehaviour
         endC = false;
         Instance = new Progress();
         Instance.Degree = 0;
-        Instance .LimitTime = 18;
+        Instance .LimitTime = 180;
     }
 
     private void Update()
