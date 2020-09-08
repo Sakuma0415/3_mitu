@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Storage : MonoBehaviour
 {
+    [SerializeField]
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip sound1;
     bool sw = false;
     // Start is called before the first frame update
     void Start()
@@ -17,7 +21,7 @@ public class Storage : MonoBehaviour
         texts.text = machine.end.ToString();
         if (Input.GetKeyDown(KeyCode.Space)&&sw)
         {
-
+            audioSource.PlayOneShot(sound1);
             ItemList.Instance.okane += machine.end * 1500+(machine.end* machine.end*100);
             machine.end = 0;
 

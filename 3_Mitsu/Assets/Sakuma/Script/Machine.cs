@@ -23,7 +23,10 @@ public class Machine : MonoBehaviour
     [SerializeField]
     BearMaster bearMaster;
     bool sw = false;
-
+    [SerializeField]
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip sound1;
     void Start()
     {
         line = 1;
@@ -54,6 +57,7 @@ public class Machine : MonoBehaviour
         {
 
             StackH();
+            audioSource.PlayOneShot(sound1);
         }
 
         if (Input .GetKeyDown(KeyCode.Q))

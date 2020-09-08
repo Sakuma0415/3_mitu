@@ -8,11 +8,22 @@ public class StartCont : MonoBehaviour
     float time = 3;
     [SerializeField]
     Text text;
-
+    [SerializeField]
+    AudioSource audioSource;
+    string tet = "";
+    [SerializeField ]
+    AudioClip sound1;
+    private void Start()
+    {
+        tet = "4";
+    }
 
     // Update is called once per frame
     void Update()
     {
+        
+
+
         time -= Time.deltaTime;
         if (time > 2)
         {
@@ -24,12 +35,21 @@ public class StartCont : MonoBehaviour
         {
             text.text = "1";
         }
+        if(tet!=text.text)
+        {
+            audioSource.PlayOneShot(sound1);
+        }
+
+        tet = text.text;
+
+
 
         if (time < 0)
         {
             text.text = "";
             GameStatus.Instance.ChangeGameMode(GameStatus.GameMode.Play);
-            
+            audioSource.Play();
+            this.enabled = false;
         }
     }
 }
