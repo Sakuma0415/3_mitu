@@ -2,17 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoneyMachine : MonoBehaviour
+public class Player2 : MonoBehaviour
 {
+    //instance
+    public static Player2 instance;
+
+    public int takenhoney;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
