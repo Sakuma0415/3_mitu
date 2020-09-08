@@ -19,7 +19,6 @@ public class DropHoneyComb : MonoBehaviour
 
         if (input)
         {
-            Debug.Log("蜂の巣とれるよ！");
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 GetHoney();
